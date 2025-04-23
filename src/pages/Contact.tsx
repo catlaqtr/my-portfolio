@@ -25,7 +25,7 @@ function Contact() {
           className="flex items-center justify-center gap-3 text-gray-800 hover:text-blue-600 transition"
         >
           <FaGithub className="w-6 h-6" />
-          https://github.com/catlaqtr
+          github.com/catlaqtr
         </a>
 
         <a
@@ -35,7 +35,7 @@ function Contact() {
           className="flex items-center justify-center gap-3 text-gray-800 hover:text-blue-600 transition"
         >
           <FaLinkedin className="w-6 h-6" />
-          https://www.linkedin.com/in/mete-unal-b144b733b/
+          linkedin.com/meteunal
         </a>
       </div>
     </div>
