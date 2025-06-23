@@ -13,7 +13,7 @@ export const projects: Project[] = [
     description:
       "CookEase is a modern recipe app that helps users discover, save, and share recipes with ease.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/cookease.png",
+    image: "/cookease.png",
     liveDemo: "https://cookease-fawn.vercel.app/",
     github: "https://github.com/catlaqtr/cookease",
   },
@@ -22,7 +22,7 @@ export const projects: Project[] = [
     description:
       "GameHub+ is a web app for discovering and exploring video games, featuring search, filters, and detailed game info.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/gamehub.png",
+    image: "/gamehub.png",
     liveDemo: "https://gamehub-plus.vercel.app/",
     github: "https://github.com/catlaqtr/gamehub-plus",
   },
@@ -31,7 +31,7 @@ export const projects: Project[] = [
     description:
       "Anime Finder is a web app that allows users to search and discover anime titles with detailed information and images.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/anime-finder.png",
+    image: "/anime-finder.png",
     liveDemo: "https://anime-finder-six.vercel.app/",
     github: "https://github.com/catlaqtr/anime-finder",
   },
@@ -40,7 +40,7 @@ export const projects: Project[] = [
     description:
       "MovieWatch+ is a web app for searching, discovering, and tracking movies with detailed information and user-friendly features.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/moviewatch.png",
+    image: "/moviewatch.png",
     liveDemo: "https://moviewatch-plus.vercel.app/",
     github: "https://github.com/catlaqtr/moviewatch-plus",
   },
@@ -49,7 +49,7 @@ export const projects: Project[] = [
     description:
       "Task Tracker is a productivity app for managing and tracking daily tasks efficiently with a simple and intuitive interface.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/task-tracker.png",
+    image: "/task-tracker.png",
     liveDemo: "https://task-tracker-smoky-two.vercel.app/",
     github: "https://github.com/catlaqtr/task-tracker",
   },
