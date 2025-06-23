@@ -31,7 +31,7 @@ export const projects: Project[] = [
     description:
       "Anime Finder is a web app that allows users to search and discover anime titles with detailed information and images.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/anime finder.png",
+    image: "/src/assets/tech/anime-finder.png",
     liveDemo: "https://anime-finder-six.vercel.app/",
     github: "https://github.com/catlaqtr/anime-finder",
   },
@@ -49,7 +49,7 @@ export const projects: Project[] = [
     description:
       "Task Tracker is a productivity app for managing and tracking daily tasks efficiently with a simple and intuitive interface.",
     techStack: ["React", "TypeScript", "Vite", "TailwindCSS"],
-    image: "/src/assets/tech/task tracker.png",
+    image: "/src/assets/tech/task-tracker.png",
     liveDemo: "https://task-tracker-smoky-two.vercel.app/",
     github: "https://github.com/catlaqtr/task-tracker",
   },
