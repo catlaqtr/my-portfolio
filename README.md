@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# Mete Ünal — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern dark-themed portfolio built with React, TypeScript, Tailwind CSS, and Vite. It showcases my projects, skills, and contact links, with smooth scroll‑reveal animations.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Dark by default (no toggle) with glassy navbar and gradient accents
+- Projects grid with tech filters and large screenshots
+- Animated scroll reveals (Framer Motion)
+- About page with categorized skills and LeetCode stats
+- Contact page and global footer with Email, GitHub, LinkedIn, Instagram, and LeetCode
+- Resume download from `/Mete_Unal_Coop_Resume_Updated.pdf`
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React + TypeScript + Vite
+- Tailwind CSS v4
+- Framer Motion
+- React Router
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Projects shown
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- CookEase — recipe discovery app
+- GameHub+ — video game explorer
+- Anime Finder — anime search app
+- MovieWatch+ — movie tracker
+- Task Tracker — daily tasks manager
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Local development
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. Install dependencies
+   - npm install
+2. Start dev server
+   - npm run dev
+3. Build for production
+   - npm run build
+4. Preview build
+   - npm run preview
+
+## Contact
+
+- Email: meteunal46@hotmail.com
+- GitHub: https://github.com/catlaqtr
+- LinkedIn: https://www.linkedin.com/in/mete-unal-b144b733b/
+- Instagram: https://www.instagram.com/meteunal4646
+- LeetCode: https://leetcode.com/u/catlaqtr/
+
+## License
+
+This project is for personal portfolio use.
