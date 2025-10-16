@@ -12,7 +12,6 @@ function App() {
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-850 to-slate-900 text-slate-100">
         <Navbar />
         <main className="pt-20">
-          {/* offset for fixed navbar */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

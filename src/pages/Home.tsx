@@ -32,11 +32,11 @@ function Home() {
         </span>
       </h1>
       <p className="text-slate-300 text-lg md:text-xl max-w-2xl mb-2">
-        Full‑stack and mobile‑leaning developer building modern apps for web and
-        mobile.
+        Full‑stack, mobile app learning developer building modern apps for the
+        web and mobile.
       </p>
       <p className="text-slate-400 mb-8">
-        Currently a Humber College Computer Programming student.
+        I'm currently a Computer Programming student at Humber College.
       </p>
 
       <div className="flex flex-wrap justify-center items-center gap-3 mb-10">
@@ -101,7 +101,7 @@ function Home() {
           to="/about"
           className="px-5 py-3 rounded-md bg-slate-800 border border-slate-700 text-white font-medium hover:bg-slate-700"
         >
-          See Full Skills
+          See All Skills
         </Link>
       </div>
 

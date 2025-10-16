@@ -26,12 +26,12 @@ function About() {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-4xl font-extrabold text-white mb-4">About Me</h2>
+        <h2 className="text-4xl font-extrabold text-white mb-4">About me</h2>
         <p className="text-slate-300">
-          I'm Mete Ünal — a full‑stack and mobile‑leaning developer. I enjoy
-          building end‑to‑end solutions across the stack with React/TypeScript
-          on the front, Node/Express or Java Spring Boot on the back, and React
-          Native for mobile.
+          I'm Mete Ünal — a full‑stack developer currently learning mobile
+          development. I enjoy building end‑to‑end solutions with
+          React/TypeScript on the front end, Node/Express or Java Spring Boot on
+          the back end, and React Native for mobile.
         </p>
       </motion.div>
 
@@ -44,7 +44,7 @@ function About() {
           transition={{ duration: 0.5 }}
           className="rounded-xl border border-slate-800 bg-slate-900/60 p-5"
         >
-          <div className="text-sm text-slate-400">Primary Focus</div>
+          <div className="text-sm text-slate-400">Primary focus</div>
           <div className="mt-2 font-semibold text-slate-100">
             Full‑stack Engineering
           </div>
@@ -56,7 +56,7 @@ function About() {
           transition={{ duration: 0.55 }}
           className="rounded-xl border border-slate-800 bg-slate-900/60 p-5"
         >
-          <div className="text-sm text-slate-400">Currently Exploring</div>
+          <div className="text-sm text-slate-400">Currently exploring</div>
           <div className="mt-2 font-semibold text-slate-100">
             Mobile App Development
           </div>
@@ -148,10 +148,10 @@ function About() {
                   What I'm working on
                 </h4>
                 <p className="text-slate-300">
-                  Building practical apps to solidify my fundamentals and learn
-                  by doing. I focus on clean UI, performance, and readable code.
-                  Recent projects include recipe discovery, a game explorer, an
-                  anime search tool, and a movie tracker.
+                  I'm building practical apps to solidify my fundamentals and
+                  learn by doing. I focus on clean UIs, performance, and
+                  readable code. Recent projects include a recipe discovery app,
+                  a game explorer, an anime search tool, and a movie tracker.
                 </p>
               </>
             ) : (
@@ -161,8 +161,8 @@ function About() {
                 </h4>
                 <p className="text-slate-300">
                   An opportunity where I can keep learning, contribute to real
-                  code, and grow with a supportive team. I love feedback and I’m
-                  quick to iterate.
+                  code, and grow with a supportive team. I value feedback and
+                  improve quickly.
                 </p>
               </>
             )}

@@ -6,7 +6,7 @@ function Contact() {
     <div className="px-6 py-20 max-w-3xl mx-auto text-center">
       <h2 className="text-4xl font-extrabold text-white mb-4">Contact Me</h2>
       <p className="text-slate-300 mb-10">
-        I'd love to connect! Feel free to reach out through any of the platforms
+        I’d love to connect! Feel free to reach out through any of the platforms
         below.
       </p>
 
