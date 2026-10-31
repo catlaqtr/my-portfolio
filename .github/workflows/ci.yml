@@ -1,0 +1,27 @@
+# Runs on every push and pull request. Vercel builds previews separately;
+# this check catches lint, type and test failures before anything is merged.
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+
+# Cancel an in-progress run when newer commits arrive on the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
