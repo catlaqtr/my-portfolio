@@ -1,35 +1,52 @@
 import React from "react";
-import type { Project } from "../data/projects";
+import type { Project } from "../content/projects";
 
 interface ProjectCardProps {
   project: Project;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
-  <div className="group relative rounded-xl border border-slate-800 bg-slate-900/60 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
-    <div className="overflow-hidden">
-      <img
-        src={project.image}
-        alt={project.title}
-        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-        loading="lazy"
-      />
+  <article
+    id={project.id}
+    className="group relative h-full scroll-mt-28 rounded-xl border border-slate-800 bg-slate-900/60 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+  >
+    <div className="relative overflow-hidden">
+      {project.image ? (
+        <img
+          src={project.image}
+          alt={`${project.title} screenshot`}
+          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div className="w-full h-64 flex items-center justify-center bg-slate-800/60 text-slate-500 text-sm">
+          Screenshot coming soon
+        </div>
+      )}
+      {project.status === "in-development" && (
+        <span className="absolute top-3 left-3 px-2 py-1 rounded-md bg-amber-500 text-slate-950 text-xs font-semibold">
+          In development
+        </span>
+      )}
     </div>
 
     <div className="p-5">
       <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-      <p className="text-slate-300 mb-4 line-clamp-3">{project.description}</p>
+      <p className="text-slate-300 mb-4">{project.description}</p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
-        {project.techStack.map((tech) => (
-          <span
-            key={tech}
-            className="text-xs px-2 py-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700"
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
+      {project.techStack.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.techStack.map((tech) => (
+            <span
+              key={tech}
+              className="text-xs px-2 py-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="flex items-center gap-3">
         {project.liveDemo && (
@@ -53,8 +70,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
           </a>
         )}
       </div>
+
+      {import.meta.env.DEV && project.todo && (
+        <div className="mt-4 rounded-md border border-dashed border-amber-500/60 p-3 text-xs text-amber-300">
+          <div className="font-semibold">Placeholder — content needed (dev only):</div>
+          <ul className="mt-1 list-disc pl-4">
+            {project.todo.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-  </div>
+  </article>
 );
 
 export default ProjectCard;
