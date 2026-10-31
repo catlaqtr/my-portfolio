@@ -20,11 +20,25 @@ A modern dark-themed portfolio built with React, TypeScript, Tailwind CSS, and V
 
 ## Projects shown
 
+- ArcClash — Java 21 / Spring Boot deck-drafting game (in development)
+- AnimeGuess — anime image/audio guessing game
+- Throne of Dust — kingdom builder game
+- SeaStrike Battleship — full-stack Battleship game
 - CookEase — recipe discovery app
 - GameHub+ — video game explorer
 - Anime Finder — anime search app
 - MovieWatch+ — movie tracker
 - Task Tracker — daily tasks manager
+
+## Editing content
+
+All portfolio content lives in `src/content/` and is shared by every page:
+
+- `projects.ts` — projects (missing details are listed in `todo` and shown only in dev builds)
+- `skills.ts` — skills, grouped by category, marked `applied` or `learning`
+- `about.ts` — profile, education timeline and bio
+- `contact.ts` — email, social links and resume
+- `locations.ts` — the places in the (upcoming) pixel-art village mode
 
 ## Local development
 

@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
-import { projects } from "../data/projects";
+import { projects } from "../content/projects";
 import ProjectCard from "../components/ProjectCard";
 import { motion } from "framer-motion";
+import { useScrollToHash } from "../hooks/useScrollToHash";
 
 function Projects() {
   const [active, setActive] = useState<string>("All");
+  useScrollToHash();
 
   const allTech = useMemo(() => {
     const set = new Set<string>();
@@ -14,7 +16,7 @@ function Projects() {
 
   const filtered = useMemo(() => {
     if (active === "All") return projects;
-    return projects.filter((p) => p.techStack.includes(active));
+    return projects.filter((p) => p.techStack.some((t) => t === active));
   }, [active]);
 
   return (
@@ -64,7 +66,7 @@ function Projects() {
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((project, idx) => (
           <motion.div
-            key={project.title}
+            key={project.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
