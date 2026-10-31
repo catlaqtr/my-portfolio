@@ -10,6 +10,7 @@ A modern dark-themed portfolio built with React, TypeScript, Tailwind CSS, and V
 - About page with categorized skills and LeetCode stats
 - Contact page and global footer with Email, GitHub, LinkedIn, Instagram, and LeetCode
 - Resume download from `/Mete_Unal_Coop_Resume_Updated.pdf`
+- **Hearthvale** (`/play`, prototype): an explorable pixel-art village built with Phaser 4
 
 ## Tech Stack
 
@@ -17,6 +18,8 @@ A modern dark-themed portfolio built with React, TypeScript, Tailwind CSS, and V
 - Tailwind CSS v4
 - Framer Motion
 - React Router
+- Phaser 4 (village mode only, lazy-loaded)
+- Vitest
 
 ## Projects shown
 
@@ -41,10 +44,24 @@ All portfolio content lives in `src/content/` and is shared by every page:
    - npm install
 2. Start dev server
    - npm run dev
-3. Build for production
+3. Run the tests
+   - npm test
+4. Build for production
    - npm run build
-4. Preview build
+5. Preview build
    - npm run preview
+
+## Hearthvale village (prototype)
+
+With the dev server running, open http://localhost:5173/play and walk with
+WASD or the arrow keys. Add `?at=` to start next to a location:
+`arena`, `arcade`, `academy`, `house` or `post-office`
+(e.g. `/play?at=arena`).
+
+- `src/game/world/layout.ts` — where everything in the village is placed
+- `src/game/assets.ts` — textures and the named sprites cut from the tilesets
+- `src/game/scenes/` — loading (`BootScene`) and the village itself (`WorldScene`)
+- `src/assets/game/CREDITS.md` — art credits (Ninja Adventure pack, CC0)
 
 ## Contact
 
