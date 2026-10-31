@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import { BootScene } from "./scenes/BootScene";
 import { WorldScene } from "./scenes/WorldScene";
 import type { LocationId } from "../content/locations";
+import { BRIDGE_KEY, type Bridge } from "./bridge";
 
 /** Canvas size in device pixels, so every art pixel maps to whole screen pixels. */
 function deviceSize(el: HTMLElement) {
@@ -15,6 +16,8 @@ function deviceSize(el: HTMLElement) {
 }
 
 interface Props {
+  /** Shared channel between the game and the React overlay. */
+  bridge: Bridge;
   /** Start next to this location instead of the fountain. */
   startAt?: LocationId;
   className?: string;
@@ -24,7 +27,7 @@ interface Props {
  * Owns the Phaser.Game for as long as the component is mounted. React only
  * creates and destroys it; everything per-frame stays inside Phaser.
  */
-export default function PhaserGame({ startAt, className }: Props) {
+export default function PhaserGame({ bridge, startAt, className }: Props) {
   const parentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +46,7 @@ export default function PhaserGame({ startAt, className }: Props) {
       scene: [BootScene, WorldScene],
     });
     game.registry.set("startAt", startAt);
+    game.registry.set(BRIDGE_KEY, bridge);
     if (import.meta.env.DEV) (window as unknown as { __hearthvale?: Phaser.Game }).__hearthvale = game;
 
     const observer = new ResizeObserver(() => {
@@ -58,14 +62,14 @@ export default function PhaserGame({ startAt, className }: Props) {
       observer.disconnect();
       game.destroy(true);
     };
-  }, [startAt]);
+  }, [bridge, startAt]);
 
   return (
     <div
       ref={parentRef}
       className={className}
       role="application"
-      aria-label="Hearthvale village. Use W A S D or the arrow keys to walk around."
+      aria-label="Hearthvale village. Walk with W A S D or the arrow keys; press E, Space or Enter to interact. The Map button lists every place."
     />
   );
 }

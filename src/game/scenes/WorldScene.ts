@@ -11,6 +11,8 @@ import { addAmbience } from "../ambience";
 import { FONT, decalFrame, effectAnim } from "./BootScene";
 import { FOUNTAIN } from "../pixelSprites";
 import type { LocationId } from "../../content/locations";
+import { BRIDGE_KEY, type Bridge } from "../bridge";
+import { Interactions } from "../systems/Interactions";
 
 const WATER_GID = 1000;
 
@@ -67,6 +69,7 @@ export class WorldScene extends Phaser.Scene {
     this.physics.add.collider(this.player, [...villagers, ...critters]);
     for (const m of [...villagers, ...critters]) m.setCollideWorldBounds(true);
 
+    new Interactions(this, this.player, villagers, this.registry.get(BRIDGE_KEY) as Bridge);
     addAmbience(this);
     this.setupCamera();
   }

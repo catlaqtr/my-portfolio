@@ -38,7 +38,11 @@ export interface BuildingPlacement extends Placement {
 
 export type Facing = "down" | "up" | "left" | "right";
 
+export type NpcId =
+  | "guide" | "gladiator" | "arcadeFan" | "scholar" | "postmaster" | "neighbour" | "angler" | "townsfolk";
+
 export interface NpcPlacement extends Point {
+  id: NpcId;
   sprite: CharacterKey;
   facing: Facing;
   /** How far (in tiles) the NPC may wander from home. 0 = stands still. */
@@ -253,14 +257,15 @@ export const placements: Placement[] = [
 export const spawn: Point = { x: 29.5, y: 24.5 };
 
 export const npcs: NpcPlacement[] = [
-  { sprite: "oldman", x: 26.5, y: 22.5, facing: "down", wander: 0 },   // village guide
-  { sprite: "gladiator", x: 14.5, y: 7, facing: "down", wander: 2 },
-  { sprite: "princess", x: 45.5, y: 11, facing: "left", wander: 2 },
-  { sprite: "monk", x: 11, y: 21, facing: "down", wander: 2 },
-  { sprite: "inspector", x: 47.5, y: 21, facing: "right", wander: 1 },
-  { sprite: "woman", x: 19.5, y: 36.5, facing: "down", wander: 2 },
-  { sprite: "villager3", x: 31.5, y: 31.5, facing: "right", wander: 2 },
-  { sprite: "villager4", x: 33, y: 19, facing: "left", wander: 2 },
+  // The guide stands by the fountain, next to where visitors arrive.
+  { id: "guide", sprite: "oldman", x: 26.5, y: 22.5, facing: "down", wander: 0 },
+  { id: "gladiator", sprite: "gladiator", x: 14.5, y: 7, facing: "down", wander: 2 },
+  { id: "arcadeFan", sprite: "princess", x: 45.5, y: 11, facing: "left", wander: 2 },
+  { id: "scholar", sprite: "monk", x: 11, y: 21, facing: "down", wander: 2 },
+  { id: "postmaster", sprite: "inspector", x: 47.5, y: 21, facing: "right", wander: 1 },
+  { id: "neighbour", sprite: "woman", x: 19.5, y: 36.5, facing: "down", wander: 2 },
+  { id: "angler", sprite: "villager3", x: 31.5, y: 31.5, facing: "right", wander: 2 },
+  { id: "townsfolk", sprite: "villager4", x: 33, y: 19, facing: "left", wander: 2 },
 ];
 
 export const animals: AnimalPlacement[] = [

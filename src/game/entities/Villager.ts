@@ -47,14 +47,29 @@ class WanderState {
 
 export class Villager extends Walker {
   private readonly wander: WanderState;
+  /** Set while in conversation: stand still, facing the player. */
+  talking = false;
 
-  constructor(scene: Phaser.Scene, npc: NpcPlacement) {
+  constructor(scene: Phaser.Scene, readonly npc: NpcPlacement) {
     super(scene, npc.x * TILE, npc.y * TILE, npc.sprite, npc.facing);
     this.body.setImmovable(true);
     this.wander = new WanderState(new Phaser.Math.Vector2(this.x, this.y), npc.wander);
   }
 
+  /** Stop and turn towards someone. */
+  faceTowards(x: number, y: number) {
+    const dx = x - this.x;
+    const dy = y - this.y;
+    this.facing = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? "left" : "right") : dy < 0 ? "up" : "down";
+    this.animate(0, 0);
+  }
+
   preUpdate(time: number, delta: number) {
+    if (this.talking) {
+      this.setVelocity(0, 0);
+      super.preUpdate(time, delta);
+      return;
+    }
     const blocked = !this.body.blocked.none || !this.body.touching.none;
     const [vx, vy] = this.wander.step(time, this.x, this.y, blocked);
     this.setVelocity(vx, vy);

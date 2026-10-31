@@ -14,6 +14,8 @@ const PALETTE = {
   waterShade: "#79b8ce",
   foam: "#ffffff",
   iron: "#56634d",
+  parchment: "#f4d29c",
+  parchmentShade: "#e2b878",
 };
 
 type Color = string | null;
@@ -129,7 +131,20 @@ function drawBrazier() {
   return b.outline();
 }
 
+/** A small downward arrow that bobs above whatever the player can interact with. */
+function drawMarker() {
+  const m = new PixelCanvas(11, 9);
+  for (let y = 1; y < 8; y++) {
+    const half = 4 - Math.max(0, y - 4);
+    for (let x = 5 - half; x <= 5 + half; x++) {
+      m.set(x, y, y >= 4 && x >= 5 ? PALETTE.parchmentShade : PALETTE.parchment);
+    }
+  }
+  return m.outline();
+}
+
 export function registerPixelSprites(scene: Phaser.Scene) {
+  if (!scene.textures.exists("marker")) drawMarker().toTexture(scene, "marker");
   if (!scene.textures.exists("fountain")) drawFountain().toTexture(scene, "fountain");
   if (!scene.textures.exists("brazier")) drawBrazier().toTexture(scene, "brazier");
 }

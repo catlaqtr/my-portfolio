@@ -1,5 +1,6 @@
 import React from "react";
 import type { Project } from "../content/projects";
+import ProjectDetailsView from "./ProjectDetailsView";
 
 interface ProjectCardProps {
   project: Project;
@@ -70,6 +71,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
           </a>
         )}
       </div>
+
+      {project.details.sourceNote && (
+        <p className="mt-3 text-xs text-slate-400">{project.details.sourceNote}</p>
+      )}
+
+      <details className="group/details mt-4 border-t border-slate-800 pt-3">
+        <summary className="cursor-pointer select-none text-sm font-medium text-blue-400 hover:text-blue-300">
+          Architecture, stack &amp; roadmap
+        </summary>
+        <div className="mt-4">
+          <ProjectDetailsView project={project} tone="slate" headingLevel={4} />
+        </div>
+      </details>
 
       {import.meta.env.DEV && project.todo && (
         <div className="mt-4 rounded-md border border-dashed border-amber-500/60 p-3 text-xs text-amber-300">

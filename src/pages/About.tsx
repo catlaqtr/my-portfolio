@@ -1,13 +1,7 @@
 import { motion } from "framer-motion";
-import {
-  bio,
-  intro,
-  profile,
-  quickFacts,
-  timeline,
-  transition,
-} from "../content/about";
-import { skillCategories, skillsByCategory } from "../content/skills";
+import { bio, intro, profile, quickFacts, transition } from "../content/about";
+import SkillGroups from "../components/SkillGroups";
+import Timeline from "../components/Timeline";
 import { useScrollToHash } from "../hooks/useScrollToHash";
 
 const reveal = {
@@ -69,84 +63,18 @@ function About() {
           ))}
         </div>
 
-        <ol className="mt-8 relative border-l border-slate-700 ml-2 space-y-6">
-          {timeline.map((entry) => (
-            <li key={entry.title} className="pl-6 relative">
-              <span
-                aria-hidden="true"
-                className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-slate-900"
-              />
-              <div className="text-xs uppercase tracking-wide text-slate-400">
-                {entry.period}
-              </div>
-              <div className="font-semibold text-slate-100">{entry.title}</div>
-              <div className="text-sm text-slate-400">{entry.place}</div>
-              {entry.detail && (
-                <p className="mt-1 text-sm text-slate-300">{entry.detail}</p>
-              )}
-            </li>
-          ))}
-        </ol>
+        <div className="mt-8">
+          <Timeline tone="slate" />
+        </div>
       </motion.div>
 
       {/* Skills */}
       <h3 id="skills" className="mt-14 scroll-mt-28 text-2xl font-bold text-white">
         Skills
       </h3>
-      <div className="mt-2 flex flex-wrap gap-4 text-xs text-slate-400">
-        <span className="inline-flex items-center gap-2">
-          <span className="h-3 w-5 rounded-full bg-slate-800 border border-slate-700" />
-          Used in projects
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="h-3 w-5 rounded-full border border-dashed border-amber-400/70" />
-          Currently learning
-        </span>
-      </div>
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {skillCategories.map((category, idx) => {
-          const items = skillsByCategory(category);
-          const applied = items.filter((s) => s.status === "applied");
-          const learning = items.filter((s) => s.status === "learning");
-          return (
-            <motion.div
-              key={category}
-              {...reveal}
-              transition={{ duration: 0.5, delay: idx * 0.05 }}
-              className="rounded-xl border border-slate-800 bg-slate-900/60 p-5"
-            >
-              <div className="text-sm text-slate-400">{category}</div>
-              {applied.length > 0 && (
-                <ul className="mt-3 flex flex-wrap gap-2" aria-label={`${category}: used in projects`}>
-                  {applied.map((s) => (
-                    <li
-                      key={s.name}
-                      className="px-2.5 py-1 rounded-full bg-slate-800 text-slate-200 text-xs border border-slate-700"
-                    >
-                      {s.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {learning.length > 0 && (
-                <>
-                  <div className="mt-3 text-xs text-amber-300/90">Currently learning</div>
-                  <ul className="mt-2 flex flex-wrap gap-2" aria-label={`${category}: currently learning`}>
-                    {learning.map((s) => (
-                      <li
-                        key={s.name}
-                        className="px-2.5 py-1 rounded-full text-amber-100 text-xs border border-dashed border-amber-400/70"
-                      >
-                        {s.name}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </motion.div>
-          );
-        })}
-      </div>
+      <motion.div className="mt-2" {...reveal} transition={{ duration: 0.5 }}>
+        <SkillGroups tone="slate" headingLevel={4} />
+      </motion.div>
 
       {/* LeetCode Stats */}
       <motion.div className="mt-14" {...reveal} transition={{ duration: 0.5 }}>
