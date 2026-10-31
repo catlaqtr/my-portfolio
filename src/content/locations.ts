@@ -8,8 +8,7 @@ export type LocationId =
   | "arcade"
   | "academy"
   | "house"
-  | "post-office"
-  | "board";
+  | "post-office";
 
 export interface VillageLocation {
   id: LocationId;
@@ -56,13 +55,6 @@ export const locations: VillageLocation[] = [
     tagline: "Resume, email and social links.",
     accent: "#e08a1e",
     classicRoute: "/contact",
-  },
-  {
-    id: "board",
-    name: "Project Gallery",
-    tagline: "A notice board with all of my projects.",
-    accent: "#5a8a3c",
-    classicRoute: "/projects",
   },
 ];
 

@@ -59,7 +59,7 @@ export const timeline: TimelineEntry[] = [
 export const bio = [
   {
     heading: "What I'm working on",
-    body: "I'm building practical apps to solidify my fundamentals and learn by doing. I focus on clean UIs, performance, and readable code. Recent projects include a recipe discovery app, a game explorer, an anime search tool, and a movie tracker.",
+    body: "I'm building practical apps to solidify my fundamentals and learn by doing. I focus on clean UIs, performance, and readable code. My current projects are ArcClash, a strategic deck-drafting game on Java 21 and Spring Boot, and AnimeGuess, an anime image and audio guessing game.",
   },
   {
     heading: "What I want next",

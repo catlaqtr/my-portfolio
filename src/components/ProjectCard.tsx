@@ -33,7 +33,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
 
     <div className="p-5">
       <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-      <p className="text-slate-300 mb-4 line-clamp-3">{project.description}</p>
+      <p className="text-slate-300 mb-4">{project.description}</p>
 
       {project.techStack.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
