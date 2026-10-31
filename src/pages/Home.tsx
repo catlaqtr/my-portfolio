@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { profile } from "../content/about";
 import { skills } from "../content/skills";
+import PixelButton from "../components/PixelButton";
 
 const featuredSkills = skills.filter((s) => "featured" in s && s.featured);
 const skillLogos = skills.filter((s) => "icon" in s);
@@ -50,11 +51,37 @@ function Home() {
         </Link>
       </div>
 
-      <div className="flex flex-wrap justify-center items-center gap-6 mt-12 opacity-80">
+      <aside
+        aria-labelledby="village-invite"
+        className="relative mt-12 w-full max-w-2xl overflow-hidden border-4 border-bark text-left shadow-[0_6px_0_#1e0f07]"
+      >
+        <div
+          aria-hidden="true"
+          className="pixelated absolute inset-0 bg-[url(/hearthvale.webp)] bg-[length:1920px_1344px] bg-[position:50%_45%]"
+        />
+        <div className="relative flex flex-col gap-4 bg-gradient-to-r from-bark/95 via-bark/80 to-bark/30 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 id="village-invite" className="font-pixel text-[27px] uppercase [word-spacing:0.4em] text-parchment">
+              Visit Hearthvale
+            </h2>
+            <p className="mt-1 max-w-sm text-sm text-parchment/90">
+              Prefer to explore? Walk through this portfolio as a pixel-art village.
+            </p>
+          </div>
+          <PixelButton to="/play" variant="primary" size="lg">
+            <span aria-hidden="true">▶</span> Enter the Village
+          </PixelButton>
+        </div>
+      </aside>
+
+      <ul className="flex flex-wrap justify-center items-center gap-3 mt-12" aria-label="Technologies">
         {skillLogos.map((skill) => (
-          <img key={skill.name} src={skill.icon} alt={skill.name} className="h-8" />
+          // Light tiles keep dark logos (React, Vite, Git…) visible on the dark page.
+          <li key={skill.name} className="rounded-md bg-slate-100 p-1.5">
+            <img src={skill.icon} alt={skill.name} title={skill.name} className="h-7 w-7 object-contain" />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

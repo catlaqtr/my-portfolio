@@ -29,7 +29,7 @@ function Play() {
           <p className="hidden text-xs sm:block">Mete Ünal's portfolio village · prototype</p>
         </div>
         <Link
-          to="/"
+          to="/portfolio"
           className="pointer-events-auto shrink-0 whitespace-nowrap rounded-md border-2 border-[#3b1f0e] bg-[#3b1f0e] px-3 py-2 text-xs font-semibold text-[#f4d29c] shadow-[0_3px_0_#1e0f07] hover:bg-[#5c3a1e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f4d29c]"
         >
           Recruiter Mode

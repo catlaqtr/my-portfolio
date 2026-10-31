@@ -51,7 +51,18 @@ All portfolio content lives in `src/content/` and is shared by every page:
 5. Preview build
    - npm run preview
 
-## Hearthvale village (prototype)
+## Routes
+
+| Path | Page |
+| --- | --- |
+| `/` | Title screen: **Enter the Village** or **Recruiter Mode** |
+| `/portfolio` | Classic home (Recruiter Mode) |
+| `/about`, `/projects`, `/contact` | Classic pages |
+| `/play` | Hearthvale village (lazy-loaded) |
+
+`vercel.json` rewrites unknown paths to `index.html` so these work on refresh.
+
+## Hearthvale village
 
 With the dev server running, open http://localhost:5173/play and walk with
 WASD or the arrow keys. Add `?at=` to start next to a location:

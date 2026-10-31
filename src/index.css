@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+/* Pixel font from the Ninja Adventure pack (CC0) — headings and buttons only. */
+@font-face {
+  font-family: "NinjaAdventure";
+  src: url("./assets/fonts/ninja-adventure.ttf") format("truetype");
+  font-display: swap;
+}
+
+@theme {
+  --font-pixel: "NinjaAdventure", ui-monospace, monospace;
+
+  /* Hearthvale palette, sampled from the game art */
+  --color-parchment: #f4d29c;
+  --color-parchment-dark: #e2b878;
+  --color-bark: #3b1f0e;
+  --color-bark-light: #5c3a1e;
+  --color-meadow: #6dbb4b;
+  --color-meadow-dark: #3f7d2c;
+}
+
+/* Slow drift across the village behind the title screen. */
+@keyframes village-pan {
+  from { background-position: 44% 46%; }
+  to { background-position: 56% 54%; }
+}
+
+/* Keep pixel art crisp when scaled up. */
+.pixelated {
+  image-rendering: pixelated;
+}
