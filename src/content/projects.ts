@@ -1,6 +1,17 @@
 import type { SkillName } from "./skills";
 
-export type ProjectStatus = "released" | "in-development";
+/**
+ * - `in-development`: being built, no release yet.
+ * - `not-live`: built, but no public deployment at the moment.
+ * - `live`: publicly playable (requires a verified `liveDemo`).
+ */
+export type ProjectStatus = "in-development" | "not-live" | "live";
+
+export const statusLabel: Record<ProjectStatus, string> = {
+  "in-development": "In development",
+  "not-live": "Not live yet",
+  live: "Live",
+};
 
 /** Deeper detail shown in the village panels and the Projects page. */
 export interface ProjectDetails {
@@ -109,7 +120,7 @@ export const projects: Project[] = [
     id: "animeguess",
     title: "AnimeGuess",
     description:
-      "An AI-powered anime character guessing game. Players ask yes/no questions about a hidden character and an AI answers from the character's canonical information. It has several game modes, accounts and leaderboards, and real-time multiplayer, with a Next.js frontend and a Spring Boot backend deployed using Vercel and Render.",
+      "An AI-powered anime character guessing game. Players ask yes/no questions about a hidden character and an AI answers from the character's canonical information. It has several game modes, accounts and leaderboards, and real-time multiplayer, with a Next.js frontend and a Spring Boot backend set up for Vercel and Render. It isn't live yet.",
     techStack: [
       "Java",
       "Spring Boot",
@@ -135,7 +146,7 @@ export const projects: Project[] = [
       "Vercel",
       "Render",
     ],
-    status: "released",
+    status: "not-live",
     details: {
       tagline: "AI-powered anime character guessing game · Next.js + Spring Boot",
       highlights: [
@@ -154,7 +165,7 @@ export const projects: Project[] = [
           { name: "Security", detail: "Spring Security with JWT and OAuth2 login" },
           { name: "AI", detail: "Spring AI with OpenAI answers players' questions" },
           { name: "Data", detail: "PostgreSQL via Spring Data JPA with Flyway migrations; Redis for rate limiting" },
-          { name: "Delivery", detail: "Docker images and GitHub Actions CI, deployed using Vercel and Render" },
+          { name: "Delivery", detail: "Docker images and GitHub Actions CI, configured for Vercel and Render" },
         ],
       },
       stack: [
@@ -170,7 +181,7 @@ export const projects: Project[] = [
     },
     todo: [
       "Screenshots",
-      "Live URL: the site's canonical address is https://animeguess.net. Set it as liveDemo once you've confirmed the deployment works",
+      "Not live yet. When it is, set liveDemo (canonical address in its code: https://animeguess.net) and status \"live\"",
     ],
   },
 ];

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { prefetchVillageProps } from "./playLoader";
 import { profile } from "../content/about";
 import { skills } from "../content/skills";
 import PixelButton from "../components/PixelButton";
@@ -68,7 +69,7 @@ function Home() {
               Prefer to explore? Walk through this portfolio as a pixel-art village.
             </p>
           </div>
-          <PixelButton to="/play" variant="primary" size="lg">
+          <PixelButton to="/play" {...prefetchVillageProps} variant="primary" size="lg">
             <span aria-hidden="true">▶</span> Enter the Village
           </PixelButton>
         </div>

@@ -3,12 +3,15 @@ import { dialogue } from "../world/dialogue";
 import type { NpcId } from "../world/layout";
 import { pixelButtonClass } from "../../components/pixelButtonClass";
 import { prefersReducedMotion, useModalDialog } from "./useModalDialog";
+import KeyIcon from "./KeyIcon";
+import facesetBox from "../../assets/game/ui/faceset-box.png";
+import arrow from "../../assets/game/ui/arrow.png";
 
 const CHARS_PER_TICK = 2;
 const TICK_MS = 22;
 
 /** Classic RPG speech box with a portrait, typewriter text and paging. */
-function DialogueBox({ npc, onClose }: { npc: NpcId; onClose: () => void }) {
+function DialogueBox({ npc, touch, onClose }: { npc: NpcId; touch: boolean; onClose: () => void }) {
   const { name, portrait, lines } = dialogue[npc];
   const { ref, onCancel } = useModalDialog(onClose);
   const [page, setPage] = useState(0);
@@ -46,35 +49,42 @@ function DialogueBox({ npc, onClose }: { npc: NpcId; onClose: () => void }) {
       aria-label={`Talking to ${name}`}
       onCancel={onCancel}
       onKeyDown={onKeyDown}
-      className="mx-auto mb-4 mt-auto w-[calc(100%-1rem)] max-w-2xl border-4 border-bark bg-parchment p-0 text-bark shadow-[0_6px_0_#1e0f07] backdrop:bg-transparent sm:mb-8"
+      className="pixel-frame mx-auto mb-[max(0.5rem,env(safe-area-inset-bottom))] mt-auto w-[calc(100%-1rem)] max-w-2xl p-0 text-bark backdrop:bg-transparent sm:mb-8"
     >
-      <div className="flex gap-3 p-3 sm:gap-4 sm:p-4">
-        <img
-          src={portrait}
-          alt=""
-          width={76}
-          height={76}
-          className="pixelated h-[57px] w-[57px] shrink-0 border-2 border-bark bg-parchment-dark sm:h-[76px] sm:w-[76px]"
-        />
+      {/* Tapping anywhere in the speech area also continues, which suits phones. */}
+      <div className="flex cursor-pointer gap-3 sm:gap-4" onClick={advance}>
+        <div className="relative h-[72px] w-[72px] shrink-0 sm:h-24 sm:w-24">
+          <img src={facesetBox} alt="" className="pixelated absolute inset-0 h-full w-full" draggable={false} />
+          <img
+            src={portrait}
+            alt=""
+            className="pixelated absolute left-[7.5px] top-[7.5px] h-[57px] w-[57px] sm:left-[10px] sm:top-[10px] sm:h-[76px] sm:w-[76px]"
+            draggable={false}
+          />
+        </div>
         <div className="min-w-0 flex-1">
-          <p className="font-pixel text-[18px] uppercase [word-spacing:0.4em] text-bark-light">{name}</p>
+          <p className="pixel-plate inline-block px-2 font-pixel text-[18px] uppercase leading-7 [word-spacing:0.4em]">{name}</p>
           {/* The typed-out text is decorative; screen readers get the whole line at once. */}
-          <p aria-hidden="true" className="mt-1 min-h-[3rem] text-[15px] leading-snug sm:text-base">
+          <p aria-hidden="true" className="mt-2 min-h-[3.75rem] text-[15px] leading-snug sm:text-base">
             {line.slice(0, shown)}
+            {done && (
+              <img src={arrow} alt="" width={13} height={13} className="pixelated ml-1 inline-block align-baseline motion-safe:animate-[nudge-down_700ms_ease-in-out_infinite]" />
+            )}
           </p>
           <p aria-live="polite" className="sr-only">{line}</p>
         </div>
       </div>
-      <div className="flex items-center justify-between gap-3 border-t-2 border-bark/20 px-3 py-2 sm:px-4">
-        <span className="text-xs text-bark/70">
-          {page + 1} / {lines.length} · E, Space or Enter
+      <div className="mt-2 flex items-center justify-between gap-3 border-t-[3px] border-ember-dark/50 pt-2">
+        <span className="flex items-center gap-1.5 text-xs text-bark/75">
+          {page + 1} / {lines.length}
+          {touch ? " · tap to continue" : <> · <KeyIcon k="e" scale={1} /> <KeyIcon k="space" scale={1} /> <KeyIcon k="enter" scale={1} /></>}
         </span>
         <div className="flex gap-2">
-          <button type="button" onClick={onClose} className={pixelButtonClass("parchment")}>
+          <button type="button" onClick={onClose} className={`${pixelButtonClass("parchment")} min-h-11`}>
             Close
           </button>
-          <button type="button" data-autofocus onClick={advance} className={pixelButtonClass("dark")}>
-            {done && last ? "Done" : "Next"} <span aria-hidden="true">▼</span>
+          <button type="button" data-autofocus onClick={advance} className={`${pixelButtonClass("dark")} min-h-11`}>
+            {done && last ? "Done" : "Next"}
           </button>
         </div>
       </div>

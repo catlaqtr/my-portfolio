@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { registerPixelSprites } from "../pixelSprites";
+import { BRIDGE_KEY, type Bridge } from "../bridge";
 import {
   TILE, animals, characters, decals, effects, images, props,
   type AnimalKey, type CharacterKey, type EffectKey,
@@ -22,6 +23,8 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload() {
+    const bridge = this.registry.get(BRIDGE_KEY) as Bridge | undefined;
+    this.load.on(Phaser.Loader.Events.PROGRESS, (value: number) => bridge?.emit("loading", value));
     for (const [key, url] of Object.entries(images)) this.load.image(key, url);
     for (const group of [characters, animals, effects]) {
       for (const [key, { url, frameWidth, frameHeight }] of Object.entries(group)) {

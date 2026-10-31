@@ -10,11 +10,11 @@ describe("Bridge", () => {
     const bridge = new Bridge();
     const seen = vi.fn();
     const off = bridge.on("modal", seen);
-    bridge.emit("modal", true);
+    bridge.emit("modal", "panel");
     off();
     bridge.emit("modal", false);
     expect(seen).toHaveBeenCalledTimes(1);
-    expect(seen).toHaveBeenCalledWith(true);
+    expect(seen).toHaveBeenCalledWith("panel");
   });
 });
 

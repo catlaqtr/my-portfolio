@@ -4,16 +4,9 @@ import { BootScene } from "./scenes/BootScene";
 import { WorldScene } from "./scenes/WorldScene";
 import type { LocationId } from "../content/locations";
 import { BRIDGE_KEY, type Bridge } from "./bridge";
+import { renderSize } from "./viewport";
 
-/** Canvas size in device pixels, so every art pixel maps to whole screen pixels. */
-function deviceSize(el: HTMLElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 3);
-  return {
-    width: Math.max(1, Math.round(el.clientWidth * dpr)),
-    height: Math.max(1, Math.round(el.clientHeight * dpr)),
-    dpr,
-  };
-}
+const measure = (el: HTMLElement) => renderSize(el.clientWidth, el.clientHeight, window.devicePixelRatio);
 
 interface Props {
   /** Shared channel between the game and the React overlay. */
@@ -32,7 +25,7 @@ export default function PhaserGame({ bridge, startAt, className }: Props) {
 
   useEffect(() => {
     const parent = parentRef.current!;
-    const size = deviceSize(parent);
+    const size = measure(parent);
     const game = new Phaser.Game({
       type: Phaser.AUTO,
       parent,
@@ -41,18 +34,20 @@ export default function PhaserGame({ bridge, startAt, className }: Props) {
       backgroundColor: "#2d4a26",
       banner: false,
       physics: { default: "arcade", arcade: { debug: false } },
-      // The canvas is rendered at device resolution and shown at CSS size.
-      scale: { mode: Phaser.Scale.NONE, width: size.width, height: size.height, zoom: 1 / size.dpr },
+      // Rendered at up to 2x device resolution and shown at CSS size (see viewport.ts).
+      scale: { mode: Phaser.Scale.NONE, width: size.width, height: size.height, zoom: size.cssPerRenderPx },
       scene: [BootScene, WorldScene],
     });
     game.registry.set("startAt", startAt);
+    game.registry.set("upscale", size.upscale);
     game.registry.set(BRIDGE_KEY, bridge);
     if (import.meta.env.DEV) (window as unknown as { __hearthvale?: Phaser.Game }).__hearthvale = game;
 
     const observer = new ResizeObserver(() => {
-      const next = deviceSize(parent);
+      const next = measure(parent);
+      game.registry.set("upscale", next.upscale);
       game.scale.resize(next.width, next.height);
-      game.scale.setZoom(1 / next.dpr);
+      game.scale.setZoom(next.cssPerRenderPx);
     });
     observer.observe(parent);
 
@@ -67,7 +62,8 @@ export default function PhaserGame({ bridge, startAt, className }: Props) {
   return (
     <div
       ref={parentRef}
-      className={className}
+      // touch-none: the game handles touches itself (no page panning or pinch-zoom).
+      className={`touch-none [&_canvas]:[image-rendering:pixelated] ${className ?? ""}`}
       role="application"
       aria-label="Hearthvale village. Walk with W A S D or the arrow keys; press E, Space or Enter to interact. The Map button lists every place."
     />

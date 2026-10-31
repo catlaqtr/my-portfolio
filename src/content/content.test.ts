@@ -9,9 +9,12 @@ describe("portfolio content", () => {
     expect(projects.map((p) => p.id)).toEqual(["arcclash", "animeguess"]);
   });
 
-  it("only shows a live link for verified deployments", () => {
-    // AnimeGuess gets a Play button only once its deployment is confirmed working.
-    expect(projects.find((p) => p.id === "animeguess")?.liveDemo).toBeUndefined();
+  it("only shows a live link for verified, live deployments", () => {
+    // Neither project is live yet, so neither may show a Play / Live Demo button.
+    for (const p of projects) {
+      expect(p.status === "live", p.id).toBe(Boolean(p.liveDemo));
+      expect(p.status, p.id).not.toBe("live");
+    }
   });
 
   it("references only known skills in project tech stacks", () => {

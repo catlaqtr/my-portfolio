@@ -10,14 +10,13 @@ import { Animal, Villager } from "../entities/Villager";
 import { addAmbience } from "../ambience";
 import { FONT, decalFrame, effectAnim } from "./BootScene";
 import { FOUNTAIN } from "../pixelSprites";
+import { pixelPerfectZoom } from "../viewport";
 import type { LocationId } from "../../content/locations";
 import { BRIDGE_KEY, type Bridge } from "../bridge";
 import { Interactions } from "../systems/Interactions";
 
 const WATER_GID = 1000;
 
-/** How many tiles should fit across the shorter side of the screen. */
-const TILES_ON_SHORT_SIDE = 16;
 
 const inRects = (rects: Rect[], x: number, y: number) =>
   rects.some((r) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h);
@@ -69,9 +68,12 @@ export class WorldScene extends Phaser.Scene {
     this.physics.add.collider(this.player, [...villagers, ...critters]);
     for (const m of [...villagers, ...critters]) m.setCollideWorldBounds(true);
 
-    new Interactions(this, this.player, villagers, this.registry.get(BRIDGE_KEY) as Bridge);
+    const bridge = this.registry.get(BRIDGE_KEY) as Bridge;
+    new Interactions(this, this.player, villagers, bridge);
     addAmbience(this);
     this.setupCamera();
+    // Let the first frame render before React removes the loading screen.
+    this.time.delayedCall(0, () => bridge.emit("ready", true));
   }
 
   /** The fountain, or just outside a building when the URL asks for one (?at=arena). */
@@ -240,7 +242,7 @@ export class WorldScene extends Phaser.Scene {
 
     const fitZoom = () => {
       const short = Math.min(this.scale.width, this.scale.height);
-      cam.setZoom(Math.max(1, Math.round(short / (TILES_ON_SHORT_SIDE * TILE))));
+      cam.setZoom(pixelPerfectZoom(short, (this.registry.get("upscale") as number) ?? 1));
     };
     fitZoom();
     this.scale.on(Phaser.Scale.Events.RESIZE, fitZoom);

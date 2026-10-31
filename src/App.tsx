@@ -7,9 +7,11 @@ import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import LoadingScreen from "./game/ui/LoadingScreen";
+import { loadPlay } from "./pages/playLoader";
 
-// Phaser is only downloaded when someone enters the village.
-const Play = lazy(() => import("./pages/Play"));
+// Phaser is only downloaded when someone heads for the village (see playLoader).
+const Play = lazy(loadPlay);
 
 function ClassicLayout() {
   return (
@@ -37,13 +39,7 @@ function App() {
         <Route
           path="/play"
           element={
-            <Suspense
-              fallback={
-                <div className="fixed inset-0 grid place-items-center bg-[#2d4a26] text-[#f4d29c]">
-                  Loading the village…
-                </div>
-              }
-            >
+            <Suspense fallback={<LoadingScreen />}>
               <Play />
             </Suspense>
           }

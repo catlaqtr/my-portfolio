@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import { prefetchVillageProps } from "../pages/playLoader";
 import { useState } from "react";
 import PixelButton from "./PixelButton";
 
@@ -30,14 +31,14 @@ function Navbar() {
               {l.label}
             </NavLink>
           ))}
-          <PixelButton to="/play" variant="primary" className="ml-3">
+          <PixelButton to="/play" {...prefetchVillageProps} variant="primary" className="ml-3">
             <span aria-hidden="true">▶</span> Enter the Village
           </PixelButton>
         </div>
 
         {/* Mobile: the village button stays visible next to the menu toggle */}
         <div className="md:hidden flex items-center gap-2">
-          <PixelButton to="/play" variant="primary">
+          <PixelButton to="/play" {...prefetchVillageProps} variant="primary">
             <span aria-hidden="true">▶</span> Village
           </PixelButton>
           <button

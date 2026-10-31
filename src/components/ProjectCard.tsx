@@ -1,5 +1,5 @@
 import React from "react";
-import type { Project } from "../content/projects";
+import { statusLabel, type Project } from "../content/projects";
 import ProjectDetailsView from "./ProjectDetailsView";
 
 interface ProjectCardProps {
@@ -25,9 +25,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
           Screenshot coming soon
         </div>
       )}
-      {project.status === "in-development" && (
+      {project.status !== "live" && (
         <span className="absolute top-3 left-3 px-2 py-1 rounded-md bg-amber-500 text-slate-950 text-xs font-semibold">
-          In development
+          {statusLabel[project.status]}
         </span>
       )}
     </div>

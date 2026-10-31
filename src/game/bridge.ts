@@ -7,17 +7,33 @@ export type Interactable =
   | { kind: "npc"; id: NpcId };
 
 /**
- * Messages between Phaser and React. Phaser reports what the player is
- * standing next to and when they interact; React reports when a panel or
- * dialogue is open so the game can pause player input.
+ * What React has open on top of the village:
+ * - `dialogue`: the village stays visible and animated, the player waits.
+ * - `panel`: a building panel or the map covers the view, so the game
+ *   loop sleeps to save battery.
+ */
+export type ModalState = false | "dialogue" | "panel";
+
+/**
+ * Messages between Phaser and React. Phaser reports loading progress, what
+ * the player is standing next to and when they interact; React reports
+ * what's open on top of the game and relays touch controls.
  */
 export interface BridgeEvents {
+  /** Phaser → React: asset loading progress, 0 to 1. */
+  loading: number;
+  /** Phaser → React: the village is built and playable. */
+  ready: true;
   /** Phaser → React: the interactable in reach changed (null = nothing). */
   focus: Interactable | null;
-  /** Phaser → React: the player pressed E / Space / Enter. */
+  /** Phaser → React: the player pressed E / Space / Enter (or the A button). */
   interact: Interactable;
-  /** React → Phaser: a panel, dialogue or menu is open. */
-  modal: boolean;
+  /** React → Phaser: what's open on top of the village. */
+  modal: ModalState;
+  /** React → Phaser: touch joystick direction; length 0 (still) to 1 (full speed). */
+  move: { x: number; y: number };
+  /** React → Phaser: the on-screen A button was pressed. */
+  action: true;
 }
 
 type Listener<K extends keyof BridgeEvents> = (payload: BridgeEvents[K]) => void;

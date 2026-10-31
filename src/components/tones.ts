@@ -4,15 +4,15 @@
  */
 export const tones = {
   parchment: {
-    heading: "font-pixel text-[18px] uppercase [word-spacing:0.4em] text-bark",
+    heading: "font-pixel text-[18px] uppercase [word-spacing:0.4em] text-frame",
     text: "text-bark",
     muted: "text-bark/75",
-    chip: "border-bark/30 bg-bark/10 text-bark",
+    chip: "border-frame/40 bg-ember/15 text-bark",
     learningChip: "border-dashed border-[#b4202a]/70 text-bark",
-    box: "border-bark/30 bg-parchment-dark/40",
-    code: "bg-bark text-parchment",
-    dot: "bg-bark",
-    line: "border-bark/30",
+    box: "border-ember-dark/60 bg-ember/10",
+    code: "bg-ink text-paper",
+    dot: "bg-frame",
+    line: "border-frame/40",
   },
   slate: {
     heading: "text-sm font-semibold uppercase tracking-wide text-slate-300",

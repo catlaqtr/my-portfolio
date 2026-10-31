@@ -1,4 +1,5 @@
 import { FaFileAlt } from "react-icons/fa";
+import { prefetchVillageProps } from "./playLoader";
 import PixelButton from "../components/PixelButton";
 import { profile } from "../content/about";
 import { contactLinks, isExternal, resume } from "../content/contact";
@@ -39,7 +40,7 @@ function Title() {
         </p>
 
         <nav aria-label="Choose how to view the portfolio" className="mt-7 flex flex-col items-stretch gap-4 sm:flex-row sm:justify-center">
-          <PixelButton to="/play" variant="primary" size="lg">
+          <PixelButton to="/play" {...prefetchVillageProps} variant="primary" size="lg">
             <span aria-hidden="true">▶</span> Enter the Village
           </PixelButton>
           <PixelButton to="/portfolio" variant="dark" size="lg">

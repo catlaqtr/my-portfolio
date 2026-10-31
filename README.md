@@ -67,7 +67,11 @@ All portfolio content lives in `src/content/` and is shared by every page:
 With the dev server running, open http://localhost:5173/play and walk with
 WASD or the arrow keys. Stand at a door or next to a villager and press
 E, Space or Enter to open that building's panel or talk; Esc closes it.
-The **Map** button lists every place for quick access. Add `?at=` to start next to a location:
+The **Map** button lists every place for quick access.
+
+On phones and tablets, drag anywhere in the lower-left of the screen to walk
+(the joystick appears under your thumb) and tap the **A** button to enter a
+building or talk. Panels open full-screen; tap ✕ to return. Add `?at=` to start next to a location:
 `arena`, `arcade`, `academy`, `house` or `post-office`
 (e.g. `/play?at=arena`).
 
@@ -76,7 +80,8 @@ The **Map** button lists every place for quick access. Add `?at=` to start next 
 - `src/game/scenes/` — loading (`BootScene`) and the village itself (`WorldScene`)
 - `src/game/systems/Interactions.ts` — what the player can reach, the marker, the interact keys
 - `src/game/bridge.ts` — typed events between Phaser and the React overlay
-- `src/game/ui/` — React panels, NPC dialogue box, interaction prompt and map
+- `src/game/ui/` — React panels, NPC dialogue box, interaction prompt, map, touch controls
+- `src/game/viewport.ts` — canvas sizing (render ≤2x, whole-pixel zoom)
 - `src/game/world/dialogue.ts` — what each villager says
 - `src/assets/game/CREDITS.md` — art credits (Ninja Adventure pack, CC0)
 

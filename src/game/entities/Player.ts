@@ -10,6 +10,8 @@ export class Player extends Walker {
   private readonly keys: Keys;
   /** True while a panel or dialogue is open; the player stands still. */
   frozen = false;
+  /** Direction from the touch joystick; its length (0–1) scales the speed. */
+  touch = { x: 0, y: 0 };
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "boy", "up");
@@ -33,12 +35,18 @@ export class Player extends Walker {
       return;
     }
     const k = this.keys;
-    const x = Number(k.right.isDown || k.d.isDown) - Number(k.left.isDown || k.a.isDown);
-    const y = Number(k.down.isDown || k.s.isDown) - Number(k.up.isDown || k.w.isDown);
+    let x = Number(k.right.isDown || k.d.isDown) - Number(k.left.isDown || k.a.isDown);
+    let y = Number(k.down.isDown || k.s.isDown) - Number(k.up.isDown || k.w.isDown);
     // Normalise so diagonal movement isn't faster.
-    const len = Math.hypot(x, y) || 1;
-    this.setVelocity((x / len) * SPEED, (y / len) * SPEED);
-    this.animate(x, y);
+    let speed = SPEED / (Math.hypot(x, y) || 1);
+    if (x === 0 && y === 0 && (this.touch.x !== 0 || this.touch.y !== 0)) {
+      // The joystick is already normalised; a light push walks slower.
+      ({ x, y } = this.touch);
+      speed = SPEED;
+    }
+    this.setVelocity(x * speed, y * speed);
+    // Face along the main direction of travel (a gentle diagonal push still animates).
+    this.animate(Math.abs(x) >= Math.abs(y) / 2 ? x : 0, Math.abs(y) >= Math.abs(x) / 2 ? y : 0);
     super.preUpdate(time, delta);
   }
 }

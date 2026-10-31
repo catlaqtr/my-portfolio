@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { TILE } from "../assets";
 import { buildings } from "../world/layout";
 import { findInteractable, sameInteractable, type LocationZone } from "../world/interaction";
-import type { Bridge, Interactable } from "../bridge";
+import type { Bridge, Interactable, ModalState } from "../bridge";
 import type { Player } from "../entities/Player";
 import type { Villager } from "../entities/Villager";
 
@@ -17,7 +17,7 @@ const MARKER_DEPTH = 99_000;
  */
 export class Interactions {
   private focus: Interactable | null = null;
-  private modalOpen = false;
+  private modal: ModalState = false;
   private readonly zones: LocationZone[];
   private readonly marker: Phaser.GameObjects.Image;
   private readonly bob: Phaser.Tweens.Tween;
@@ -51,17 +51,21 @@ export class Interactions {
       targets: this.marker, y: "-=3", duration: 450, yoyo: true, repeat: -1, ease: "Sine.easeInOut", paused: true,
     });
 
-    const offModal = bridge.on("modal", (open) => this.setModal(open));
+    const offs = [
+      bridge.on("modal", (state) => this.setModal(state)),
+      bridge.on("action", () => this.interact()),
+      bridge.on("move", (v) => (player.touch = v)),
+    ];
     scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      offModal();
+      for (const off of offs) off();
       for (const name of keyEvents) kb.off(name, onKey);
       scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
     });
   }
 
   private update() {
-    if (this.modalOpen) return;
+    if (this.modal) return;
 
     const next = findInteractable(
       { x: this.player.x, y: this.player.y },
@@ -77,7 +81,7 @@ export class Interactions {
   }
 
   private interact() {
-    if (!this.modalOpen && this.focus) this.bridge.emit("interact", this.focus);
+    if (!this.modal && this.focus) this.bridge.emit("interact", this.focus);
   }
 
   private placeMarker() {
@@ -105,13 +109,20 @@ export class Interactions {
     }
   }
 
-  private setModal(open: boolean) {
-    if (open === this.modalOpen) return;
-    this.modalOpen = open;
+  private setModal(state: ModalState) {
+    const was = this.modal;
+    if (state === was) return;
+    this.modal = state;
     const kb = this.scene.input.keyboard!;
+    const loop = this.scene.game.loop;
 
-    if (open) {
+    if (state) {
+      // A full panel hides the village: stop rendering it to save battery.
+      if (state === "panel") loop.sleep();
+      else if (!loop.running) loop.wake(true);
+      if (was) return; // switching between kinds of modal; input is already released
       this.player.frozen = true;
+      this.player.touch = { x: 0, y: 0 };
       this.marker.setVisible(false);
       // Hand the keyboard to the page so Space/Enter/arrows work in the panel.
       kb.enabled = false;
@@ -125,6 +136,7 @@ export class Interactions {
       return;
     }
 
+    if (!loop.running) loop.wake(true); // seamless: no time jump after sleeping
     // Re-enable on the next tick, so the key that closed the panel
     // can't immediately re-open it.
     this.scene.time.delayedCall(120, () => {

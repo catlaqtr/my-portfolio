@@ -13,5 +13,9 @@ in `43119f4` and can be restored with:
 git checkout 43119f4 -- "src/assets/Ninja Adventure - Asset Pack"
 ```
 
+Interface pieces (dialogue frame, portrait box, key and gamepad icons,
+joystick, arrow) also come from the pack's `Ui` folder, as does the pixel
+font in `src/assets/fonts/`.
+
 The fountain and the fire bowls are drawn in code (`src/game/pixelSprites.ts`)
 using the pack's own palette.
