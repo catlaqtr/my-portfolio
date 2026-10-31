@@ -20,7 +20,7 @@ function Footer() {
               className="hover:text-white transition-colors"
               aria-label={link.label}
             >
-              <link.icon className="w-5 h-5" />
+              <link.icon aria-hidden="true" className="w-5 h-5" />
             </a>
           ))}
           <a

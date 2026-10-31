@@ -6,6 +6,7 @@ import keyW from "../../assets/game/ui/key-w.png";
 import keyA from "../../assets/game/ui/key-a.png";
 import keyS from "../../assets/game/ui/key-s.png";
 import keyD from "../../assets/game/ui/key-d.png";
+import keyM from "../../assets/game/ui/key-m.png";
 import buttonA from "../../assets/game/ui/button-a.png";
 
 const icons = {
@@ -17,6 +18,7 @@ const icons = {
   a: { src: keyA, w: 13, h: 13, label: "A" },
   s: { src: keyS, w: 13, h: 13, label: "S" },
   d: { src: keyD, w: 13, h: 13, label: "D" },
+  m: { src: keyM, w: 13, h: 13, label: "M" },
   gamepadA: { src: buttonA, w: 16, h: 15, label: "A button" },
 } as const;
 

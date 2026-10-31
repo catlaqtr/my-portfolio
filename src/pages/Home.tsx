@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import { prefetchVillageProps } from "./playLoader";
 import { profile } from "../content/about";
 import { skills } from "../content/skills";
+import { resume } from "../content/contact";
 import PixelButton from "../components/PixelButton";
 
 const featuredSkills = skills.filter((s) => "featured" in s && s.featured);
 const skillLogos = skills.filter((s) => "icon" in s);
+
+const cta =
+  "px-5 py-3 rounded-md text-white font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400";
 
 function Home() {
   return (
@@ -37,20 +41,21 @@ function Home() {
         ))}
       </div>
 
-      <div className="flex gap-3">
-        <Link
-          to="/projects"
-          className="px-5 py-3 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-        >
+      {/* Everything a recruiter needs, one click away — no game required. */}
+      <nav aria-label="Quick links" className="flex flex-wrap justify-center gap-3">
+        <Link to="/projects" className={`${cta} bg-blue-600 hover:bg-blue-700`}>
           View Projects
         </Link>
-        <Link
-          to="/about"
-          className="px-5 py-3 rounded-md bg-slate-800 border border-slate-700 text-white font-medium hover:bg-slate-700"
-        >
+        <a href={resume.href} target="_blank" rel="noopener noreferrer" className={`${cta} bg-slate-800 border border-slate-700 hover:bg-slate-700`}>
+          Download Resume
+        </a>
+        <Link to="/about" className={`${cta} bg-slate-800 border border-slate-700 hover:bg-slate-700`}>
           See All Skills
         </Link>
-      </div>
+        <Link to="/contact" className={`${cta} bg-slate-800 border border-slate-700 hover:bg-slate-700`}>
+          Contact
+        </Link>
+      </nav>
 
       <aside
         aria-labelledby="village-invite"

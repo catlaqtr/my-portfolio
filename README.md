@@ -62,12 +62,35 @@ All portfolio content lives in `src/content/` and is shared by every page:
 
 `vercel.json` rewrites unknown paths to `index.html` so these work on refresh.
 
+## SEO and pre-rendering
+
+`npm run build` builds the app, then renders every Recruiter Mode page to
+static HTML (`scripts/prerender.mjs`): each gets its own title, description,
+canonical URL, Open Graph/Twitter tags and schema.org Person data, and its
+real content readable without JavaScript. It also writes `robots.txt` and
+`sitemap.xml`. Titles and descriptions live in `src/content/seo.ts`.
+
+The public address comes from Vercel's `VERCEL_PROJECT_PRODUCTION_URL`;
+set `SITE_URL` to override it (e.g. a custom domain). Preview deployments are
+marked `noindex` automatically. `vercel.json` serves `/about` → `about.html`
+and everything else (e.g. `/play`) from the app shell.
+
+## Accessibility
+
+- Skip links, one `h1` per page, labelled landmarks, visible focus rings.
+- In the village: screen-reader instructions, live announcements for what's
+  in reach and for travel, and **Quick Travel** (Map button or `M`) to visit
+  or read about any building without walking.
+- Reduced motion follows the system setting, with an in-game override.
+- Checked with axe-core (WCAG 2.1 AA) on every page, desktop and mobile.
+
 ## Hearthvale village
 
 With the dev server running, open http://localhost:5173/play and walk with
 WASD or the arrow keys. Stand at a door or next to a villager and press
 E, Space or Enter to open that building's panel or talk; Esc closes it.
-The **Map** button lists every place for quick access.
+The **Map** button (or `M`) opens Quick Travel: travel to any building's door,
+or open its information directly.
 
 On phones and tablets, drag anywhere in the lower-left of the screen to walk
 (the joystick appears under your thumb) and tap the **A** button to enter a

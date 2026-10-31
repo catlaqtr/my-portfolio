@@ -34,6 +34,8 @@ export interface BridgeEvents {
   move: { x: number; y: number };
   /** React → Phaser: the on-screen A button was pressed. */
   action: true;
+  /** React → Phaser: Quick Travel — move the player to a building's door. */
+  travel: LocationId;
 }
 
 type Listener<K extends keyof BridgeEvents> = (payload: BridgeEvents[K]) => void;

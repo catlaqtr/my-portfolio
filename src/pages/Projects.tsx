@@ -8,7 +8,7 @@ function Projects() {
 
   return (
     <div className="px-6 py-20 max-w-5xl mx-auto">
-      <motion.h2
+      <motion.h1
         className="text-4xl font-extrabold text-white text-center mb-6"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -16,7 +16,7 @@ function Projects() {
         transition={{ duration: 0.5 }}
       >
         My Projects
-      </motion.h2>
+      </motion.h1>
       <motion.p
         className="text-slate-300 text-center max-w-2xl mx-auto"
         initial={{ opacity: 0, y: 16 }}

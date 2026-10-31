@@ -2,7 +2,8 @@ import { useEffect, useState, type KeyboardEvent } from "react";
 import { dialogue } from "../world/dialogue";
 import type { NpcId } from "../world/layout";
 import { pixelButtonClass } from "../../components/pixelButtonClass";
-import { prefersReducedMotion, useModalDialog } from "./useModalDialog";
+import { useModalDialog } from "./useModalDialog";
+import { reducedMotion } from "../motion";
 import KeyIcon from "./KeyIcon";
 import facesetBox from "../../assets/game/ui/faceset-box.png";
 import arrow from "../../assets/game/ui/arrow.png";
@@ -15,7 +16,8 @@ function DialogueBox({ npc, touch, onClose }: { npc: NpcId; touch: boolean; onCl
   const { name, portrait, lines } = dialogue[npc];
   const { ref, onCancel } = useModalDialog(onClose);
   const [page, setPage] = useState(0);
-  const [shown, setShown] = useState(() => (prefersReducedMotion() ? Infinity : 0));
+  // With reduced motion, each line appears in full instead of being typed out.
+  const [shown, setShown] = useState(() => (reducedMotion() ? Infinity : 0));
   const line = lines[page];
   const done = shown >= line.length;
   const last = page === lines.length - 1;
@@ -31,7 +33,7 @@ function DialogueBox({ npc, touch, onClose }: { npc: NpcId; touch: boolean; onCl
     else if (last) onClose();
     else {
       setPage((p) => p + 1);
-      setShown(prefersReducedMotion() ? Infinity : 0);
+      setShown(reducedMotion() ? Infinity : 0);
     }
   };
 

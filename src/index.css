@@ -70,6 +70,15 @@
   50% { transform: translateY(3px); }
 }
 
+/* In-game "Reduce motion" setting (src/game/motion.ts): stop CSS animations site-wide. */
+[data-reduce-motion] *,
+[data-reduce-motion] *::before,
+[data-reduce-motion] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
 /* Keep pixel art crisp when scaled up. */
 .pixelated {
   image-rendering: pixelated;

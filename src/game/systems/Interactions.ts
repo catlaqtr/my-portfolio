@@ -3,6 +3,8 @@ import { TILE } from "../assets";
 import { buildings } from "../world/layout";
 import { findInteractable, sameInteractable, type LocationZone } from "../world/interaction";
 import type { Bridge, Interactable, ModalState } from "../bridge";
+import type { LocationId } from "../../content/locations";
+import { reducedMotion } from "../motion";
 import type { Player } from "../entities/Player";
 import type { Villager } from "../entities/Villager";
 
@@ -55,6 +57,7 @@ export class Interactions {
       bridge.on("modal", (state) => this.setModal(state)),
       bridge.on("action", () => this.interact()),
       bridge.on("move", (v) => (player.touch = v)),
+      bridge.on("travel", (id) => this.travelTo(id)),
     ];
     scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -78,6 +81,24 @@ export class Interactions {
       this.bridge.emit("focus", next);
     }
     this.placeMarker();
+  }
+
+  /** Quick Travel: stand the player at a building's door, facing it. */
+  private travelTo(id: LocationId) {
+    const b = buildings.find((bb) => bb.location === id);
+    if (!b) return;
+    const cam = this.scene.cameras.main;
+    const move = () => {
+      this.player.body.reset((b.entrance.x + 0.5) * TILE, (b.entrance.y + 0.6) * TILE);
+      this.player.facing = "up";
+      cam.centerOn(this.player.x, this.player.y);
+    };
+    if (reducedMotion()) return move();
+    cam.fadeOut(140, 20, 27, 27);
+    cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+      move();
+      cam.fadeIn(220, 20, 27, 27);
+    });
   }
 
   private interact() {

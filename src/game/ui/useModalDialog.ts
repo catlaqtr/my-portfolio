@@ -25,7 +25,3 @@ export function useModalDialog(onClose: () => void) {
 
   return { ref, onCancel };
 }
-
-/** Respect the user's reduced-motion preference for typewriter text etc. */
-export const prefersReducedMotion = () =>
-  typeof window !== "undefined" && (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false);

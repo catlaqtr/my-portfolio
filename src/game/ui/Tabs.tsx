@@ -51,7 +51,7 @@ function Tabs({ tabs, label }: { tabs: Tab[]; label: string }) {
               className={`-mb-[3px] border-[3px] border-b-0 border-ink px-3 pb-1 pt-1.5 font-pixel text-[18px] uppercase [word-spacing:0.4em] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ember/70 ${
                 selected
                   ? "bg-ember text-ink shadow-[inset_0_3px_0_#ffd09a]"
-                  : "bg-[#a3754e] text-paper hover:bg-[#b5875f]"
+                  : "bg-[#7a5234] text-paper hover:bg-[#8c603e]"
               }`}
             >
               {tab.label}

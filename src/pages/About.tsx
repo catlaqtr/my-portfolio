@@ -21,7 +21,7 @@ function About() {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-4xl font-extrabold text-white mb-4">About me</h2>
+        <h1 className="text-4xl font-extrabold text-white mb-4">About me</h1>
         <p className="text-slate-300">{intro}</p>
       </motion.div>
 
@@ -56,7 +56,7 @@ function About() {
 
       {/* Journey */}
       <motion.div className="mt-14" {...reveal} transition={{ duration: 0.5 }}>
-        <h3 className="text-2xl font-bold text-white">{transition.heading}</h3>
+        <h2 className="text-2xl font-bold text-white">{transition.heading}</h2>
         <div className="mt-4 space-y-3 text-slate-300 max-w-3xl">
           {transition.paragraphs.map((p) => (
             <p key={p}>{p}</p>
@@ -69,18 +69,18 @@ function About() {
       </motion.div>
 
       {/* Skills */}
-      <h3 id="skills" className="mt-14 scroll-mt-28 text-2xl font-bold text-white">
+      <h2 id="skills" className="mt-14 scroll-mt-28 text-2xl font-bold text-white">
         Skills
-      </h3>
+      </h2>
       <motion.div className="mt-2" {...reveal} transition={{ duration: 0.5 }}>
-        <SkillGroups tone="slate" headingLevel={4} />
+        <SkillGroups tone="slate" headingLevel={3} />
       </motion.div>
 
       {/* LeetCode Stats */}
       <motion.div className="mt-14" {...reveal} transition={{ duration: 0.5 }}>
-        <h4 className="text-lg font-semibold text-white mb-4">
+        <h2 className="text-lg font-semibold text-white mb-4">
           LeetCode Stats
-        </h4>
+        </h2>
         <a
           href={profile.leetcode.href}
           target="_blank"
@@ -104,9 +104,9 @@ function About() {
             transition={{ duration: 0.5, delay: i * 0.05 }}
             className="rounded-xl border border-slate-800 bg-slate-900/60 p-6"
           >
-            <h4 className="text-lg font-semibold text-white mb-2">
+            <h2 className="text-lg font-semibold text-white mb-2">
               {block.heading}
-            </h4>
+            </h2>
             <p className="text-slate-300">{block.body}</p>
           </motion.div>
         ))}

@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { prefetchVillageProps } from "../pages/playLoader";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PixelButton from "./PixelButton";
 
 const links = [
@@ -10,17 +10,32 @@ const links = [
   { to: "/contact", label: "Contact" },
 ];
 
-const linkBase = "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200";
+const linkBase =
+  "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400";
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   `${linkBase} ${isActive ? "text-white bg-blue-600" : "text-slate-200 hover:text-white"}`;
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+
+  // Escape closes the mobile menu and hands focus back to its button.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggle.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 bg-slate-900/80 border-b border-slate-800/60">
+    <nav aria-label="Main" className="fixed top-0 left-0 right-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 bg-slate-900/80 border-b border-slate-800/60">
       <div className="max-w-6xl mx-auto flex justify-between items-center gap-3 px-4 py-3">
-        <Link to="/portfolio" className="text-xl md:text-2xl font-extrabold text-white">
+        <Link to="/portfolio" className="text-xl md:text-2xl font-extrabold text-white rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400">
           Mete Ünal
         </Link>
 
@@ -42,10 +57,13 @@ function Navbar() {
             <span aria-hidden="true">▶</span> Village
           </PixelButton>
           <button
-            className="inline-flex items-center justify-center p-2 rounded-md text-slate-200 hover:bg-slate-800"
+            ref={toggle}
+            type="button"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 rounded-md text-slate-200 hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-blue-400"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-menu"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +85,7 @@ function Navbar() {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden border-t border-slate-800/60 bg-slate-900/95">
+        <div id="mobile-menu" className="md:hidden border-t border-slate-800/60 bg-slate-900/95">
           <div className="px-4 py-3 flex flex-col gap-2">
             {links.map((l) => (
               <NavLink key={l.to} to={l.to} end={l.end} onClick={() => setOpen(false)} className={linkClass}>

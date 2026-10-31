@@ -2,24 +2,37 @@ import Phaser from "phaser";
 import { TILE } from "./assets";
 import { arcadeGlow, chimneys } from "./world/layout";
 import { effectAnim } from "./scenes/BootScene";
+import { onReducedMotionChange, reducedMotion } from "./motion";
 
 /** Above every world object, below nothing. */
 const SKY = 100_000;
 
+/** Turns a piece of ambience down when reduced motion is on, and back up when off. */
+type Toggle = (reduced: boolean) => void;
+
 /**
  * Atmosphere that isn't tied to the layout grid: drifting leaves, chimney
- * smoke and the arcade's glowing marquee. Everything respects the user's
- * reduced-motion setting by thinning out or standing still.
+ * smoke and the arcade's glowing marquee. With reduced motion on, leaves and
+ * sparkles stop, the glow holds still and smoke thins out — and this updates
+ * live when the in-game setting changes.
  */
 export function addAmbience(scene: Phaser.Scene) {
-  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-  addLeaves(scene, reduced);
-  addChimneySmoke(scene, reduced);
-  addArcadeGlow(scene, reduced);
+  const toggles = [addLeaves(scene), addChimneySmoke(scene), addArcadeGlow(scene)];
+  const apply = (reduced: boolean) => toggles.forEach((t) => t(reduced));
+  apply(reducedMotion());
+  const off = onReducedMotionChange(apply);
+  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, off);
 }
 
-function addLeaves(scene: Phaser.Scene, reduced: boolean) {
-  if (reduced) return;
+const setEmitting = (emitter: Phaser.GameObjects.Particles.ParticleEmitter, on: boolean) => {
+  if (on) emitter.start();
+  else {
+    emitter.stop();
+    emitter.killAll();
+  }
+};
+
+function addLeaves(scene: Phaser.Scene): Toggle {
   // Emit along a strip just above whatever the camera is looking at.
   const zone = new Phaser.Geom.Rectangle(0, 0, 1, 1);
   const cam = scene.cameras.main;
@@ -42,11 +55,15 @@ function addLeaves(scene: Phaser.Scene, reduced: boolean) {
     const view = cam.worldView;
     zone.setTo(view.x - 40, view.y - 10, view.width + 40, 8);
   });
+  return (reduced) => leaves.forEach((e) => setEmitting(e, !reduced));
 }
 
-function addChimneySmoke(scene: Phaser.Scene, reduced: boolean) {
+function addChimneySmoke(scene: Phaser.Scene): Toggle {
+  let reduced = false;
+  let tick = 0;
   for (const c of chimneys) {
     const puff = () => {
+      if (reduced && tick++ % 2) return; // half as many puffs
       const s = scene.add.sprite(c.x * TILE, c.y * TILE, "smoke").setScale(0.5).setAlpha(0.55).setDepth(SKY - 1);
       s.play({ key: effectAnim("smoke"), frameRate: 4, repeat: 0 });
       scene.tweens.add({
@@ -58,11 +75,12 @@ function addChimneySmoke(scene: Phaser.Scene, reduced: boolean) {
         onComplete: () => s.destroy(),
       });
     };
-    scene.time.addEvent({ delay: reduced ? 2600 : 1300, loop: true, callback: puff });
+    scene.time.addEvent({ delay: 1300, loop: true, callback: puff });
   }
+  return (r) => (reduced = r);
 }
 
-function addArcadeGlow(scene: Phaser.Scene, reduced: boolean) {
+function addArcadeGlow(scene: Phaser.Scene): Toggle {
   if (!scene.textures.exists("glow")) {
     const size = 64;
     const tex = scene.textures.createCanvas("glow", size, size)!;
@@ -78,10 +96,9 @@ function addArcadeGlow(scene: Phaser.Scene, reduced: boolean) {
   const y = arcadeGlow.y * TILE;
   const glow = scene.add.image(x, y, "glow").setBlendMode(Phaser.BlendModes.ADD)
     .setScale(1.6, 0.8).setTint(0xff4fb8).setAlpha(0.45).setDepth(SKY - 2);
-  if (reduced) return;
 
   // Cycle the neon between magenta and cyan, like an arcade marquee.
-  scene.tweens.addCounter({
+  const pulse = scene.tweens.addCounter({
     from: 0, to: 1, duration: 2400, yoyo: true, repeat: -1, ease: "Sine.easeInOut",
     onUpdate: (tween) => {
       const v = tween.getValue() ?? 0;
@@ -91,7 +108,7 @@ function addArcadeGlow(scene: Phaser.Scene, reduced: boolean) {
       glow.setTint(Phaser.Display.Color.GetColor(c.r, c.g, c.b)).setAlpha(0.38 + 0.14 * Math.sin(v * Math.PI));
     },
   });
-  scene.add.particles(x, y - 6, "spark", {
+  const sparks = scene.add.particles(x, y - 6, "spark", {
     frame: [0, 1, 2, 3, 4],
     x: { min: -28, max: 28 },
     y: { min: -10, max: 6 },
@@ -101,4 +118,12 @@ function addArcadeGlow(scene: Phaser.Scene, reduced: boolean) {
     speedY: { min: -8, max: -2 },
     tint: [0xff8ad8, 0x8af0ff, 0xfff38a],
   }).setDepth(SKY - 2);
+
+  return (reduced) => {
+    if (reduced) {
+      pulse.pause();
+      glow.setTint(0xff4fb8).setAlpha(0.45);
+    } else pulse.resume();
+    setEmitting(sparks, !reduced);
+  };
 }

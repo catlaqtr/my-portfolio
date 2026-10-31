@@ -33,7 +33,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
     </div>
 
     <div className="p-5">
-      <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+      <h2 className="text-xl font-bold text-white mb-2">{project.title}</h2>
       <p className="text-slate-300 mb-4">{project.description}</p>
 
       {project.techStack.length > 0 && (
@@ -81,7 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => (
           Architecture, stack &amp; roadmap
         </summary>
         <div className="mt-4">
-          <ProjectDetailsView project={project} tone="slate" headingLevel={4} />
+          <ProjectDetailsView project={project} tone="slate" headingLevel={3} />
         </div>
       </details>
 

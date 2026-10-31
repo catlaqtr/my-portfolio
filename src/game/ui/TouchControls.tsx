@@ -88,7 +88,7 @@ function ActionButton({ bridge, target }: { bridge: Bridge; target: Interactable
   const [pressed, setPressed] = useState(false);
   const verb = target?.kind === "npc" ? "Talk" : "Enter";
   const label = !target
-    ? "Interact (walk up to a door or a villager first)"
+    ? "Enter (walk up to a door or a villager first)"
     : target.kind === "location"
       ? `Enter ${getLocation(target.id).name}`
       : `Talk to ${dialogue[target.id].name}`;
