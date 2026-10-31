@@ -80,18 +80,17 @@ describe("structured data", () => {
 });
 
 describe("siteSettings", () => {
-  it("uses Vercel's production domain and marks previews noindex", () => {
-    expect(siteSettings({ VERCEL_ENV: "production", VERCEL_PROJECT_PRODUCTION_URL: "me.vercel.app" }))
-      .toEqual({ siteUrl: "https://me.vercel.app", indexable: true });
-    expect(siteSettings({ VERCEL_ENV: "preview", VERCEL_PROJECT_PRODUCTION_URL: "me.vercel.app" }).indexable).toBe(false);
+  it("points every build at the official production address", () => {
+    expect(siteSettings({}).siteUrl).toBe("https://meteunalportfolio.vercel.app");
+    expect(siteSettings({ VERCEL_ENV: "preview" }).siteUrl).toBe("https://meteunalportfolio.vercel.app");
+  });
+
+  it("indexes production but not previews", () => {
+    expect(siteSettings({ VERCEL_ENV: "production" }).indexable).toBe(true);
+    expect(siteSettings({ VERCEL_ENV: "preview" }).indexable).toBe(false);
   });
 
   it("lets SITE_URL override it and trims trailing slashes", () => {
-    expect(siteSettings({ SITE_URL: "https://custom.dev/", VERCEL_PROJECT_PRODUCTION_URL: "me.vercel.app" }).siteUrl)
-      .toBe("https://custom.dev");
-  });
-
-  it("knows nothing locally", () => {
-    expect(siteSettings({}).siteUrl).toBe("");
+    expect(siteSettings({ SITE_URL: "https://custom.dev/" }).siteUrl).toBe("https://custom.dev");
   });
 });

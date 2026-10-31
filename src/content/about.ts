@@ -1,7 +1,9 @@
 export const profile = {
   name: "Mete Ünal",
+  // Positioned for junior Java backend roles (M5); the previous wording was
+  // "Full‑stack, mobile app learning developer building modern apps for the web and mobile."
   tagline:
-    "Full‑stack, mobile app learning developer building modern apps for the web and mobile.",
+    "Java backend developer building Spring Boot APIs with PostgreSQL, Spring Data JPA and tests, plus React and TypeScript on the front end.",
   education:
     "I completed the Computer Programming diploma at Humber College (2024–2026).",
   leetcode: {
@@ -12,10 +14,10 @@ export const profile = {
 };
 
 export const intro =
-  "I'm Mete Ünal — a full‑stack developer currently learning mobile development. I enjoy building end‑to‑end solutions with React/TypeScript on the front end, Node/Express or Java Spring Boot on the back end, and React Native for mobile.";
+  "I'm Mete Ünal — a backend-focused developer looking for a junior Java backend role. I build REST APIs with Java and Spring Boot, model data with PostgreSQL and Spring Data JPA, and back it all with tests. I'm comfortable on the front end with React and TypeScript, and I'm currently learning mobile development with React Native.";
 
 export const quickFacts = [
-  { label: "Primary focus", value: "Full‑stack Engineering" },
+  { label: "Primary focus", value: "Java backend development (Spring Boot)" },
   { label: "Currently exploring", value: "Mobile App Development" },
 ];
 
@@ -63,6 +65,6 @@ export const bio = [
   },
   {
     heading: "What I want next",
-    body: "An opportunity where I can keep learning, contribute to real code, and grow with a supportive team. I value feedback and improve quickly.",
+    body: "A junior Java backend developer role where I can keep learning, contribute to real code, and grow with a supportive team. I value feedback and improve quickly.",
   },
 ];

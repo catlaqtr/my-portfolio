@@ -2,6 +2,7 @@ import { projects } from "../content/projects";
 import ProjectCard from "../components/ProjectCard";
 import { motion } from "framer-motion";
 import { useScrollToHash } from "../hooks/useScrollToHash";
+import { frameByFrame } from "../components/frameByFrame";
 
 function Projects() {
   useScrollToHash();
@@ -12,6 +13,7 @@ function Projects() {
         className="text-4xl font-extrabold text-white text-center mb-6"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
+        onUpdate={frameByFrame}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5 }}
       >
@@ -21,6 +23,7 @@ function Projects() {
         className="text-slate-300 text-center max-w-2xl mx-auto"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
+        onUpdate={frameByFrame}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, delay: 0.1 }}
       >
@@ -33,6 +36,7 @@ function Projects() {
             key={project.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+        onUpdate={frameByFrame}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.5, delay: idx * 0.05 }}
           >

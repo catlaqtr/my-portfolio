@@ -83,3 +83,50 @@
 .pixelated {
   image-rendering: pixelated;
 }
+
+/*
+ * Game dialogs (panels, dialogue, Quick Travel) step up into place in four
+ * whole-pixel frames, so the pixel frame never blurs mid-animation. The
+ * dimmed backdrop fades in with them.
+ */
+@keyframes pixel-pop {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes backdrop-in {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.pixel-frame[open] {
+    animation: pixel-pop 160ms steps(4, end);
+  }
+  dialog.pixel-frame[open]::backdrop {
+    animation: backdrop-in 160ms ease-out;
+  }
+}
+[data-reduce-motion] dialog::backdrop {
+  animation: none !important;
+}
+
+/* Loading screen: the hero walks on the spot (4-frame walk cycle, 16px cells shown at 4x). */
+@keyframes hero-walk {
+  to { background-position-y: -256px; }
+}
+.loading-hero {
+  width: 64px;
+  height: 64px;
+  background-size: 256px 448px;
+  background-position: -192px 0;
+  image-rendering: pixelated;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .loading-hero {
+    animation: hero-walk 600ms steps(4) infinite;
+  }
+}
+
+
+/* "Press Enter" hint on the title screen blinks three times (under 5s, per WCAG 2.2.2), like an old start screen. */
+@keyframes blink {
+  50% { opacity: 0; }
+}

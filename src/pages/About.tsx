@@ -3,11 +3,13 @@ import { bio, intro, profile, quickFacts, transition } from "../content/about";
 import SkillGroups from "../components/SkillGroups";
 import Timeline from "../components/Timeline";
 import { useScrollToHash } from "../hooks/useScrollToHash";
+import { frameByFrame } from "../components/frameByFrame";
 
 const reveal = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.2 },
+  onUpdate: frameByFrame,
 };
 
 function About() {

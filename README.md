@@ -1,16 +1,20 @@
 # Mete Ünal — Portfolio
 
-A modern dark-themed portfolio built with React, TypeScript, Tailwind CSS, and Vite. It showcases my projects, skills, and contact links, with smooth scroll‑reveal animations.
+My portfolio, live at **https://meteunalportfolio.vercel.app**. It opens on a
+title screen with two ways in: **Hearthvale**, an explorable pixel-art village
+built with Phaser 4, and **Recruiter Mode**, a fast classic site with the
+résumé, projects, skills and contact details on plain pages.
 
 ## Features
 
-- Dark by default (no toggle) with glassy navbar and gradient accents
-- Projects page showcasing ArcClash and AnimeGuess
+- Recruiter Mode: dark classic site, pre-rendered for speed and search engines
+- Projects page showcasing ArcClash and AnimeGuess (architecture, API, decisions, tests, roadmap)
 - Animated scroll reveals (Framer Motion)
 - About page with categorized skills and LeetCode stats
 - Contact page and global footer with Email, GitHub, LinkedIn, Instagram, and LeetCode
 - Resume download from `/Mete_Unal_Coop_Resume_Updated.pdf`
-- **Hearthvale** (`/play`, prototype): an explorable pixel-art village built with Phaser 4
+- **Hearthvale** (`/play`): an explorable pixel-art village built with Phaser 4 — five buildings,
+  villagers to talk to, Quick Travel, touch controls, optional music (off by default)
 
 ## Tech Stack
 
@@ -36,7 +40,8 @@ All portfolio content lives in `src/content/` and is shared by every page:
 - `skills.ts` — skills, grouped by category, marked `applied` or `learning`
 - `about.ts` — profile, education timeline and bio
 - `contact.ts` — email, social links and resume
-- `locations.ts` — the five places in the (upcoming) pixel-art village mode
+- `locations.ts` — the five places in the village
+- `seo.ts` — page titles and descriptions
 
 ## Local development
 
@@ -60,7 +65,7 @@ All portfolio content lives in `src/content/` and is shared by every page:
 | `/about`, `/projects`, `/contact` | Classic pages |
 | `/play` | Hearthvale village (lazy-loaded) |
 
-`vercel.json` rewrites unknown paths to `index.html` so these work on refresh.
+All of them work on refresh and as direct links (see below).
 
 ## SEO and pre-rendering
 
@@ -70,10 +75,13 @@ canonical URL, Open Graph/Twitter tags and schema.org Person data, and its
 real content readable without JavaScript. It also writes `robots.txt` and
 `sitemap.xml`. Titles and descriptions live in `src/content/seo.ts`.
 
-The public address comes from Vercel's `VERCEL_PROJECT_PRODUCTION_URL`;
-set `SITE_URL` to override it (e.g. a custom domain). Preview deployments are
-marked `noindex` automatically. `vercel.json` serves `/about` → `about.html`
-and everything else (e.g. `/play`) from the app shell.
+Canonical URLs, `og:url`, the sitemap and structured data always point at
+the production address, https://meteunalportfolio.vercel.app (`scripts/site.mjs`);
+set `SITE_URL` to override it (e.g. a future custom domain). Preview
+deployments are additionally marked `noindex` and their `robots.txt`
+disallows crawling, so they never compete with the real site. `vercel.json`
+serves `/about` → `about.html` and everything else (e.g. `/play`) from the
+app shell.
 
 ## Accessibility
 
@@ -81,7 +89,11 @@ and everything else (e.g. `/play`) from the app shell.
 - In the village: screen-reader instructions, live announcements for what's
   in reach and for travel, and **Quick Travel** (Map button or `M`) to visit
   or read about any building without walking.
-- Reduced motion follows the system setting, with an in-game override.
+- Reduced motion follows the system setting, with an in-game override; it
+  stops page transitions, dialog animations and the village's drifting
+  leaves, clouds and sparkles.
+- Music and sound effects are off by default; the **Sound** button turns them
+  on and the choice is remembered. Nothing is downloaded while sound is off.
 - Checked with axe-core (WCAG 2.1 AA) on every page, desktop and mobile.
 
 ## Hearthvale village
@@ -106,7 +118,9 @@ building or talk. Panels open full-screen; tap ✕ to return. Add `?at=` to star
 - `src/game/ui/` — React panels, NPC dialogue box, interaction prompt, map, touch controls
 - `src/game/viewport.ts` — canvas sizing (render ≤2x, whole-pixel zoom)
 - `src/game/world/dialogue.ts` — what each villager says
-- `src/assets/game/CREDITS.md` — art credits (Ninja Adventure pack, CC0)
+- `src/game/ambience.ts` — leaves, cloud shadows, chimney smoke, arcade glow
+- `src/game/audio.ts` — optional music and sound effects
+- `src/assets/game/CREDITS.md` — art and audio credits (Ninja Adventure pack, CC0)
 
 ## Contact
 

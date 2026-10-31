@@ -16,7 +16,7 @@ export function personJsonLd(siteUrl: string) {
     "@type": "Person",
     name: profile.name,
     ...(siteUrl && { url: siteUrl }),
-    jobTitle: "Full-stack developer",
+    jobTitle: "Java backend developer",
     alumniOf: [
       { "@type": "CollegeOrUniversity", name: "Humber College" },
       { "@type": "CollegeOrUniversity", name: "Istanbul University" },

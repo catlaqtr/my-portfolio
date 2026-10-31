@@ -1,8 +1,9 @@
 import Phaser from "phaser";
 import { TILE } from "./assets";
-import { arcadeGlow, chimneys } from "./world/layout";
+import { MAP_HEIGHT, MAP_WIDTH, arcadeGlow, chimneys } from "./world/layout";
 import { effectAnim } from "./scenes/BootScene";
 import { onReducedMotionChange, reducedMotion } from "./motion";
+import { onSceneEnd } from "./sceneEnd";
 
 /** Above every world object, below nothing. */
 const SKY = 100_000;
@@ -17,11 +18,11 @@ type Toggle = (reduced: boolean) => void;
  * live when the in-game setting changes.
  */
 export function addAmbience(scene: Phaser.Scene) {
-  const toggles = [addLeaves(scene), addChimneySmoke(scene), addArcadeGlow(scene)];
+  const toggles = [addCloudShadows(scene), addLeaves(scene), addChimneySmoke(scene), addArcadeGlow(scene)];
   const apply = (reduced: boolean) => toggles.forEach((t) => t(reduced));
   apply(reducedMotion());
   const off = onReducedMotionChange(apply);
-  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, off);
+  onSceneEnd(scene, off);
 }
 
 const setEmitting = (emitter: Phaser.GameObjects.Particles.ParticleEmitter, on: boolean) => {
@@ -31,6 +32,36 @@ const setEmitting = (emitter: Phaser.GameObjects.Particles.ParticleEmitter, on: 
     emitter.killAll();
   }
 };
+
+/** Soft shadows of passing clouds drifting slowly across the whole village. */
+function addCloudShadows(scene: Phaser.Scene): Toggle {
+  const width = MAP_WIDTH * TILE;
+  const height = MAP_HEIGHT * TILE;
+  const clouds = [
+    { x: 80, y: 120, speed: 5 },
+    { x: 520, y: 380, speed: 4 },
+    { x: 860, y: 90, speed: 6 },
+    { x: 300, y: 560, speed: 4.5 },
+  ].map(({ x, y, speed }) => ({
+    img: scene.add.image(x, y, "cloud").setScale(3).setTint(0x000000).setAlpha(0.07).setDepth(SKY - 5),
+    speed,
+  }));
+  let paused = false;
+  scene.events.on(Phaser.Scenes.Events.UPDATE, (_: number, delta: number) => {
+    if (paused) return;
+    for (const c of clouds) {
+      c.img.x += (c.speed * delta) / 1000;
+      if (c.img.x - c.img.displayWidth / 2 > width) {
+        c.img.x = -c.img.displayWidth / 2;
+        c.img.y = Phaser.Math.Between(40, height - 40);
+      }
+    }
+  });
+  return (reduced) => {
+    paused = reduced;
+    for (const c of clouds) c.img.setVisible(!reduced);
+  };
+}
 
 function addLeaves(scene: Phaser.Scene): Toggle {
   // Emit along a strip just above whatever the camera is looking at.

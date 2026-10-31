@@ -52,14 +52,18 @@ function ProjectPanel({ project }: { project: Project }) {
             {project.details.sourceNote && <span className="text-sm text-bark/75">{project.details.sourceNote}</span>}
           </div>
           <div className="mt-6">
-            <ProjectDetailsView project={project} tone="parchment" sections={["highlights", "screenshots"]} />
+            <ProjectDetailsView project={project} tone="parchment" sections={["stats", "built", "screenshots"]} />
           </div>
         </>
       ),
     },
     {
       label: "Architecture",
-      content: <ProjectDetailsView project={project} tone="parchment" sections={["architecture"]} />,
+      content: <ProjectDetailsView project={project} tone="parchment" sections={["architecture", "api"]} />,
+    },
+    {
+      label: "Decisions",
+      content: <ProjectDetailsView project={project} tone="parchment" sections={["decisions", "challenges"]} />,
     },
     {
       label: "Tech & tests",

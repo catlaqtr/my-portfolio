@@ -10,9 +10,14 @@ import TouchControls from "../game/ui/TouchControls";
 import LoadingScreen from "../game/ui/LoadingScreen";
 import KeyIcon from "../game/ui/KeyIcon";
 import { useTouchMode } from "../game/ui/useTouchMode";
-import { pixelButtonClass } from "../components/pixelButtonClass";
 import { getLocation, locations, type LocationId } from "../content/locations";
 import { applyToDocument } from "../game/motion";
+import { playSound, releaseAudio, resumeOnFirstGesture, startMusic } from "../game/audio";
+import SoundToggle from "../game/ui/SoundToggle";
+
+/** Top-bar buttons share the panels' pixel name-plate look. */
+const hudButton =
+  "pixel-plate pointer-events-auto flex min-h-11 items-center gap-2 px-3 font-pixel text-[18px] uppercase leading-6 [word-spacing:0.4em] whitespace-nowrap hover:brightness-110 focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-ember";
 
 const isLocationId = (v: string | null): v is LocationId =>
   locations.some((l) => l.id === v);
@@ -51,6 +56,7 @@ function Play() {
   useEffect(() => {
     if (modal || !pendingTravel) return;
     bridge.emit("travel", pendingTravel);
+    playSound("travel");
     setStatus(`Travelled to ${getLocation(pendingTravel).name}.`);
     setPendingTravel(null);
   }, [bridge, modal, pendingTravel]);
@@ -69,7 +75,34 @@ function Play() {
 
   useEffect(() => applyToDocument(), []);
 
-  const close = () => setOpen(null);
+  // Music: try to start right away (entering the village was a click), retry on
+  // the first key/tap if the browser blocked it, and stop when leaving.
+  useEffect(() => {
+    if (ready) startMusic();
+  }, [ready]);
+  useEffect(() => {
+    const cleanup = resumeOnFirstGesture();
+    return () => {
+      cleanup();
+      releaseAudio();
+    };
+  }, []);
+
+  // Sound effects for what happens on screen.
+  useEffect(() => {
+    if (focus) playSound("blip");
+  }, [focus]);
+  useEffect(() => {
+    if (open) playSound(open.kind === "npc" ? "talk" : "open");
+  }, [open]);
+  useEffect(() => {
+    if (mapOpen) playSound("open");
+  }, [mapOpen]);
+
+  const close = () => {
+    playSound("close");
+    setOpen(null);
+  };
 
   return (
     <main className="fixed inset-0 select-none overflow-hidden bg-[#2d4a26] [-webkit-touch-callout:none]">
@@ -100,16 +133,11 @@ function Play() {
           <span className="sr-only"> (back to the title screen)</span>
         </Link>
         <div className="pointer-events-auto ml-auto flex shrink-0 gap-2">
-          <button
-            type="button"
-            onClick={() => setMapOpen(true)}
-            aria-keyshortcuts="M"
-            aria-label="Map: Quick Travel"
-            className={`${pixelButtonClass("parchment")} min-h-11`}
-          >
+          <SoundToggle className={hudButton} />
+          <button type="button" onClick={() => setMapOpen(true)} aria-keyshortcuts="M" aria-label="Map: Quick Travel" className={hudButton}>
             Map
           </button>
-          <Link to="/portfolio" className={`${pixelButtonClass("dark")} min-h-11`}>
+          <Link to="/portfolio" className={hudButton}>
             Recruiter Mode
           </Link>
         </div>
@@ -129,7 +157,10 @@ function Play() {
       {open?.kind === "npc" && <DialogueBox key={open.id} npc={open.id} touch={touch} onClose={close} />}
       {mapOpen && (
         <PlacesMenu
-          onClose={() => setMapOpen(false)}
+          onClose={() => {
+            playSound("close");
+            setMapOpen(false);
+          }}
           onTravel={(id) => {
             setMapOpen(false);
             setPendingTravel(id);

@@ -1,5 +1,7 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaFileAlt } from "react-icons/fa";
-import { prefetchVillageProps } from "./playLoader";
+import { loadPlay, prefetchVillageProps } from "./playLoader";
 import PixelButton from "../components/PixelButton";
 import { profile } from "../content/about";
 import { contactLinks, isExternal, resume } from "../content/contact";
@@ -12,6 +14,22 @@ const quickLinks = contactLinks.filter((l) => ["github", "linkedin", "email"].in
  * and its text is readable by search engines and screen readers.
  */
 function Title() {
+  const navigate = useNavigate();
+
+  // Like an old start screen: Enter starts the game — but only when nothing
+  // else is focused, so Enter on a link or button still does its own thing.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" || e.repeat || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (document.activeElement && document.activeElement !== document.body) return;
+      e.preventDefault();
+      void loadPlay();
+      navigate("/play");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [navigate]);
+
   return (
     <main className="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden bg-bark px-4 py-10 text-parchment">
       {/* The real village, captured at 1:1 and scaled up by whole pixels */}
@@ -31,7 +49,7 @@ function Title() {
         <h1 id="title-heading" className="font-pixel text-[18px] uppercase tracking-widest [word-spacing:0.4em] text-bark-light">
           {profile.name}
         </h1>
-        <p className="mt-2 font-pixel text-[54px] leading-none text-bark drop-shadow-[3px_3px_0_#e2b878] sm:text-[72px]">
+        <p className="mt-2 font-pixel text-[36px] leading-none text-bark drop-shadow-[3px_3px_0_#e2b878] min-[380px]:text-[45px] min-[440px]:text-[54px] sm:text-[72px]">
           Hearthvale
         </p>
         <p className="mx-auto mt-4 max-w-md text-sm text-bark/80 sm:text-base">{profile.tagline}</p>
@@ -48,8 +66,13 @@ function Title() {
           </PixelButton>
         </nav>
 
-        <p className="mt-5 text-xs text-bark/70">
+        <p className="mt-5 text-xs text-bark/70 pointer-coarse:hidden">
+          <span className="font-semibold text-bark motion-safe:animate-[blink_1.2s_steps(1)_3]">Press Enter to start</span>
+          <span aria-hidden="true"> · </span>
           Walk with WASD or the arrow keys
+        </p>
+        <p className="mt-5 hidden text-xs text-bark/70 pointer-coarse:block">
+          Walk with the on-screen joystick and tap A to enter
         </p>
       </section>
 

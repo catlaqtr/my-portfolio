@@ -34,11 +34,12 @@ import leaf from "../assets/game/fx/leaf.png";
 import leafPink from "../assets/game/fx/leaf-pink.png";
 import spark from "../assets/game/fx/spark.png";
 import fire from "../assets/game/fx/fire.png";
+import cloud from "../assets/game/fx/cloud.png";
 
 export const TILE = 16;
 
 export const images = {
-  floor, water, house, nature, element, towers, floorDetail, font8x8, shadow,
+  floor, water, house, nature, element, towers, floorDetail, font8x8, shadow, cloud,
 } as const;
 export type ImageKey = keyof typeof images;
 

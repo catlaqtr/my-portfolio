@@ -19,3 +19,19 @@ font in `src/assets/fonts/`.
 
 The fountain and the fire bowls are drawn in code (`src/game/pixelSprites.ts`)
 using the pack's own palette.
+
+## Audio
+
+Music and sound effects (`audio/`) are also from the pack, re-encoded to MP3
+with loudness normalised:
+
+| File | Pack source |
+| --- | --- |
+| `calm-village.mp3` | `Audio/Musics/33 - Calm Village.ogg` |
+| `open.mp3` | `Audio/Sounds/Menu/Accept4.wav` |
+| `close.mp3` | `Audio/Sounds/Menu/Cancel2.wav` |
+| `blip.mp3` | `Audio/Sounds/Menu/Move1.wav` |
+| `talk.mp3` | `Audio/Sounds/Voice/Voice4.wav` |
+| `travel.mp3` | `Audio/Sounds/Magic & Skill/Magic2.wav` |
+
+`fx/cloud.png` (the drifting cloud shadows) is `FX/Particle/Clouds.png` from the pack.

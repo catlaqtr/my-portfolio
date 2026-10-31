@@ -14,6 +14,7 @@ import { pixelPerfectZoom } from "../viewport";
 import type { LocationId } from "../../content/locations";
 import { BRIDGE_KEY, type Bridge } from "../bridge";
 import { Interactions } from "../systems/Interactions";
+import { onSceneEnd } from "../sceneEnd";
 
 const WATER_GID = 1000;
 
@@ -174,8 +175,13 @@ export class WorldScene extends Phaser.Scene {
     this.addObstacle(left + 4, top + 18, FOUNTAIN.width - 8, FOUNTAIN.height - 22);
 
     // Water arcing out of the spout and falling back into the basin.
+    // (A canvas texture, not Graphics.generateTexture: Phaser's static
+    // Graphics.TargetCamera would keep this game alive after leaving /play.)
     if (!this.textures.exists("droplet")) {
-      this.add.graphics().fillStyle(0xffffff).fillRect(0, 0, 1, 1).generateTexture("droplet", 1, 1).destroy();
+      const tex = this.textures.createCanvas("droplet", 1, 1)!;
+      tex.context.fillStyle = "#fff";
+      tex.context.fillRect(0, 0, 1, 1);
+      tex.refresh();
     }
     this.add.particles(left + FOUNTAIN.spoutX, top + FOUNTAIN.spoutY, "droplet", {
       speedX: { min: -30, max: 30 },
@@ -246,6 +252,6 @@ export class WorldScene extends Phaser.Scene {
     };
     fitZoom();
     this.scale.on(Phaser.Scale.Events.RESIZE, fitZoom);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.scale.off(Phaser.Scale.Events.RESIZE, fitZoom));
+    onSceneEnd(this, () => this.scale.off(Phaser.Scale.Events.RESIZE, fitZoom));
   }
 }

@@ -4,6 +4,7 @@ import type { NpcId } from "../world/layout";
 import { pixelButtonClass } from "../../components/pixelButtonClass";
 import { useModalDialog } from "./useModalDialog";
 import { reducedMotion } from "../motion";
+import { playSound } from "../audio";
 import KeyIcon from "./KeyIcon";
 import facesetBox from "../../assets/game/ui/faceset-box.png";
 import arrow from "../../assets/game/ui/arrow.png";
@@ -32,6 +33,7 @@ function DialogueBox({ npc, touch, onClose }: { npc: NpcId; touch: boolean; onCl
     if (!done) setShown(Infinity);
     else if (last) onClose();
     else {
+      playSound("blip");
       setPage((p) => p + 1);
       setShown(reducedMotion() ? Infinity : 0);
     }

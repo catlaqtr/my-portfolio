@@ -2,9 +2,12 @@ import type { ReactNode } from "react";
 import type { Project } from "../content/projects";
 import { tones, type Tone } from "./tones";
 
-export type DetailSection = "highlights" | "architecture" | "stack" | "testing" | "planned" | "screenshots";
+export type DetailSection =
+  | "stats" | "built" | "architecture" | "api" | "decisions" | "challenges" | "stack" | "testing" | "planned" | "screenshots";
 
-const DEFAULT_SECTIONS: DetailSection[] = ["highlights", "architecture", "stack", "testing", "planned"];
+const DEFAULT_SECTIONS: DetailSection[] = [
+  "stats", "built", "architecture", "api", "decisions", "challenges", "stack", "testing", "planned",
+];
 
 interface Props {
   project: Project;
@@ -25,7 +28,7 @@ function Section({ title, tone, level, children }: { title: string; tone: Tone; 
   );
 }
 
-/** Highlights, architecture, stack, testing, roadmap and screenshots of a project. */
+/** What a project does, how it's built, the decisions behind it, and what's next. */
 function ProjectDetailsView({ project, tone, sections = DEFAULT_SECTIONS, headingLevel = 3 }: Props) {
   const t = tones[tone];
   const d = project.details;
@@ -34,10 +37,25 @@ function ProjectDetailsView({ project, tone, sections = DEFAULT_SECTIONS, headin
   );
 
   const render: Record<DetailSection, () => ReactNode> = {
-    highlights: () =>
-      s("Highlights", (
-        <ul className="list-disc space-y-1.5 pl-5">
-          {d.highlights.map((h) => <li key={h}>{h}</li>)}
+    stats: () => (
+      <dl key="stats" className="mt-6 grid grid-cols-2 gap-2 first:mt-0 sm:grid-cols-4">
+        {d.stats.map((st) => (
+          <div key={st.label} className={`rounded-sm border-2 px-3 py-2 text-center ${t.box}`}>
+            <dd className="text-2xl font-bold">{st.value}</dd>
+            <dt className={`text-xs ${t.muted}`}>{st.label}</dt>
+          </div>
+        ))}
+      </dl>
+    ),
+    built: () =>
+      s(project.status === "in-development" ? "Built so far" : "What's built", (
+        <ul className="space-y-1.5">
+          {d.built.map((b) => (
+            <li key={b} className="flex gap-2">
+              <span aria-hidden="true" className="font-bold text-emerald-600">✓</span>
+              <span>{b}</span>
+            </li>
+          ))}
         </ul>
       )),
     architecture: () =>
@@ -55,15 +73,44 @@ function ProjectDetailsView({ project, tone, sections = DEFAULT_SECTIONS, headin
               </li>
             ))}
           </ol>
-          {d.endpoints && (
-            <p className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-              <span className={t.muted}>API:</span>
-              {d.endpoints.map((e) => (
-                <code key={e} className={`rounded-sm px-2 py-0.5 text-xs ${t.code}`}>{e}</code>
-              ))}
-            </p>
-          )}
         </>
+      )),
+    api: () =>
+      d.api &&
+      s("REST API", (
+        <ul className="space-y-2">
+          {d.api.map((r) => (
+            <li key={r.method + r.path} className={`rounded-sm border-2 px-3 py-2 ${t.box}`}>
+              <code className={`mr-2 rounded-sm px-1.5 py-0.5 text-xs font-bold ${t.code}`}>{r.method}</code>
+              <code className="text-sm font-semibold">{r.path}</code>
+              <p className="mt-1 text-sm">{r.summary}</p>
+              <p className={`text-xs ${t.muted}`}>{r.responses}</p>
+            </li>
+          ))}
+        </ul>
+      )),
+    decisions: () =>
+      s("Technical decisions", (
+        <dl className="space-y-2">
+          {d.decisions.map((dec) => (
+            <div key={dec.title}>
+              <dt className="font-semibold">{dec.title}</dt>
+              <dd className={t.muted}>{dec.detail}</dd>
+            </div>
+          ))}
+        </dl>
+      )),
+    challenges: () =>
+      d.challenges &&
+      s("Challenges & solutions", (
+        <dl className="space-y-2">
+          {d.challenges.map((c) => (
+            <div key={c.challenge} className={`rounded-sm border-2 px-3 py-2 ${t.box}`}>
+              <dt className="font-semibold">{c.challenge}</dt>
+              <dd className={t.muted}>{c.solution}</dd>
+            </div>
+          ))}
+        </dl>
       )),
     stack: () =>
       s("Tech stack", (
@@ -83,7 +130,7 @@ function ProjectDetailsView({ project, tone, sections = DEFAULT_SECTIONS, headin
     testing: () => s("Testing", <p>{d.testing}</p>),
     planned: () =>
       d.planned &&
-      s("Planned next", (
+      s("Planned (not built yet)", (
         <ul className="list-disc space-y-1 pl-5">
           {d.planned.map((p) => <li key={p}>{p}</li>)}
         </ul>

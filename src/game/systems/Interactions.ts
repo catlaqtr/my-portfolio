@@ -5,6 +5,7 @@ import { findInteractable, sameInteractable, type LocationZone } from "../world/
 import type { Bridge, Interactable, ModalState } from "../bridge";
 import type { LocationId } from "../../content/locations";
 import { reducedMotion } from "../motion";
+import { onSceneEnd } from "../sceneEnd";
 import type { Player } from "../entities/Player";
 import type { Villager } from "../entities/Villager";
 
@@ -60,7 +61,7 @@ export class Interactions {
       bridge.on("travel", (id) => this.travelTo(id)),
     ];
     scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
-    scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+    onSceneEnd(scene, () => {
       for (const off of offs) off();
       for (const name of keyEvents) kb.off(name, onKey);
       scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);

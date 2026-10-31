@@ -14,16 +14,16 @@ export interface PageMeta {
 export const pages: PageMeta[] = [
   {
     path: "/",
-    title: "Mete Ünal — Portfolio",
+    title: "Mete Ünal — Java Backend Developer Portfolio",
     description:
-      "Portfolio of Mete Ünal, a full-stack developer focused on Java and Spring Boot back ends. Explore it as a pixel-art village or in classic Recruiter Mode.",
+      "Portfolio of Mete Ünal, a Java and Spring Boot backend developer. Explore it as a pixel-art village or in classic Recruiter Mode.",
     prerender: true,
   },
   {
     path: "/portfolio",
-    title: "Mete Ünal — Full-Stack Developer (Recruiter Mode)",
+    title: "Mete Ünal — Java Backend Developer | Recruiter Mode",
     description:
-      "Projects, skills, education and contact details of Mete Ünal, a full-stack developer working with Java, Spring Boot, React and TypeScript.",
+      "Java and Spring Boot backend developer: REST APIs, PostgreSQL, Spring Data JPA and testing. Projects, skills, education, resume and contact details.",
     prerender: true,
   },
   {
@@ -57,5 +57,5 @@ export const pages: PageMeta[] = [
 
 export const pageMeta = (path: string): PageMeta => pages.find((p) => p.path === path) ?? pages[0];
 
-/** The production address, detected at build time (see vite.config.ts). Empty if unknown. */
+/** The production address (scripts/site.mjs), fixed at build time. */
 export const SITE_URL: string = __SITE_URL__;
