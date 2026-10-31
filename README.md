@@ -23,8 +23,8 @@ A modern dark-themed portfolio built with React, TypeScript, Tailwind CSS, and V
 
 ## Projects shown
 
-- ArcClash — Java 21 / Spring Boot deck-drafting game (in development)
-- AnimeGuess — anime image/audio guessing game
+- ArcClash — Java 21 / Spring Boot card-drafting duel game (in development)
+- AnimeGuess — AI-powered anime character guessing game (Next.js + Spring Boot)
 
 Earlier projects are archived (not deployed) — see `archive/README.md` to restore one.
 

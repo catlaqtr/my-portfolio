@@ -24,14 +24,14 @@ export const locations: VillageLocation[] = [
   {
     id: "arena",
     name: "ArcClash Arena",
-    tagline: "A Java 21 / Spring Boot deck-drafting game, under construction.",
+    tagline: "A Java 21 / Spring Boot card-drafting duel game, under construction.",
     accent: "#b4202a",
     classicRoute: "/projects#arcclash",
   },
   {
     id: "arcade",
     name: "AnimeGuess Arcade",
-    tagline: "Guess the anime from images and audio.",
+    tagline: "Guess the hidden anime character by asking an AI.",
     accent: "#e03c8a",
     classicRoute: "/projects#animeguess",
   },

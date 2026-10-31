@@ -52,14 +52,14 @@ export const timeline: TimelineEntry[] = [
     title: "Building ArcClash",
     place: "Personal project",
     detail:
-      "A strategic deck-drafting game on Java 21 and Spring Boot — in active development.",
+      "A strategic card-drafting duel game on Java 21 and Spring Boot — in active development.",
   },
 ];
 
 export const bio = [
   {
     heading: "What I'm working on",
-    body: "I'm building practical apps to solidify my fundamentals and learn by doing. I focus on clean UIs, performance, and readable code. My current projects are ArcClash, a strategic deck-drafting game on Java 21 and Spring Boot, and AnimeGuess, an anime image and audio guessing game.",
+    body: "I'm building practical apps to solidify my fundamentals and learn by doing. I focus on clean UIs, performance, and readable code. My current projects are ArcClash, a strategic card-drafting duel game on Java 21 and Spring Boot, and AnimeGuess, an AI-powered anime character guessing game.",
   },
   {
     heading: "What I want next",

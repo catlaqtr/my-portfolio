@@ -52,6 +52,8 @@ export const skills = [
   { name: "Spring Data JPA", category: "Backend", status: "applied", featured: true },
   { name: "Hibernate", category: "Backend", status: "applied" },
   { name: "REST APIs", category: "Backend", status: "applied" },
+  { name: "WebSockets", category: "Backend", status: "applied" },
+  { name: "Spring AI", category: "Backend", status: "applied" },
   { name: "Node.js", category: "Backend", status: "applied", featured: true, icon: NodeLogo },
   { name: "Express.js", category: "Backend", status: "applied", featured: true, icon: ExpressLogo },
   { name: "Python", category: "Backend", status: "applied", featured: true, icon: PythonLogo },
@@ -73,19 +75,21 @@ export const skills = [
   { name: "MySQL", category: "Databases", status: "applied", featured: true, icon: MySQLLogo },
   { name: "MongoDB", category: "Databases", status: "applied", featured: true, icon: MongoLogo },
   { name: "Flyway", category: "Databases", status: "applied" },
+  { name: "Redis", category: "Databases", status: "applied" },
 
-  // Testing
-  // TODO(Mete): confirm which of these ArcClash's test suite uses; switch those to "applied".
-  { name: "JUnit 5", category: "Testing", status: "learning" },
-  { name: "Mockito", category: "Testing", status: "learning" },
-  { name: "Testcontainers", category: "Testing", status: "learning" },
+  // Testing (all three are used in the ArcClash / AnimeGuess test suites)
+  { name: "JUnit 5", category: "Testing", status: "applied" },
+  { name: "Mockito", category: "Testing", status: "applied" },
+  { name: "Testcontainers", category: "Testing", status: "applied" },
 
   // Tools & DevOps
   { name: "Git", category: "Tools & DevOps", status: "applied", featured: true, icon: GitLogo },
   { name: "Docker", category: "Tools & DevOps", status: "applied", featured: true },
   { name: "Maven", category: "Tools & DevOps", status: "applied" },
   { name: "Postman", category: "Tools & DevOps", status: "applied" },
+  { name: "GitHub Actions", category: "Tools & DevOps", status: "applied" },
   { name: "Vercel", category: "Tools & DevOps", status: "applied" },
+  { name: "Render", category: "Tools & DevOps", status: "applied" },
 ] as const satisfies readonly Skill[];
 
 export type SkillName = (typeof skills)[number]["name"];
