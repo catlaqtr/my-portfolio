@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { pages, pageMeta } from "../content/seo";
 import { headTags, personJsonLd, robotsTxt, sitemapXml } from "./head";
-import { siteSettings } from "../../scripts/site.mjs";
+import { LEGACY_HOSTS, PRODUCTION_URL, siteSettings } from "../../scripts/site.mjs";
+import vercel from "../../vercel.json";
 
 const SITE = "https://portfolio.example";
 
@@ -80,9 +81,11 @@ describe("structured data", () => {
 });
 
 describe("siteSettings", () => {
-  it("points every build at the official production address", () => {
-    expect(siteSettings({}).siteUrl).toBe("https://meteunalportfolio.vercel.app");
-    expect(siteSettings({ VERCEL_ENV: "preview" }).siteUrl).toBe("https://meteunalportfolio.vercel.app");
+  it("points every build at the official www domain", () => {
+    expect(PRODUCTION_URL).toBe("https://www.meteunal.dev");
+    expect(siteSettings({}).siteUrl).toBe("https://www.meteunal.dev");
+    expect(siteSettings({ VERCEL_ENV: "production" }).siteUrl).toBe("https://www.meteunal.dev");
+    expect(siteSettings({ VERCEL_ENV: "preview" }).siteUrl).toBe("https://www.meteunal.dev");
   });
 
   it("indexes production but not previews", () => {
@@ -92,5 +95,47 @@ describe("siteSettings", () => {
 
   it("lets SITE_URL override it and trims trailing slashes", () => {
     expect(siteSettings({ SITE_URL: "https://custom.dev/" }).siteUrl).toBe("https://custom.dev");
+  });
+});
+
+describe("canonical URLs on the official domain", () => {
+  const { siteUrl } = siteSettings({ VERCEL_ENV: "production" });
+
+  it("every page's canonical, og:url and twitter image use https://www.meteunal.dev", () => {
+    for (const page of pages) {
+      const html = headTags(page, siteUrl, true);
+      expect(html, page.path).toContain(`<link rel="canonical" href="https://www.meteunal.dev${page.path}" />`);
+      expect(html, page.path).toContain(`<meta property="og:url" content="https://www.meteunal.dev${page.path}" />`);
+      expect(html, page.path).toContain(`<meta name="twitter:image" content="https://www.meteunal.dev/og-image.png" />`);
+      expect(html, page.path).not.toMatch(/vercel\.app|\/\/meteunal\.dev/);
+    }
+  });
+
+  it("sitemap, robots.txt and structured data use the www domain", () => {
+    expect(sitemapXml(siteUrl)).not.toMatch(/vercel\.app|\/\/meteunal\.dev/);
+    expect(robotsTxt(siteUrl, true)).toContain("Sitemap: https://www.meteunal.dev/sitemap.xml");
+    expect(personJsonLd(siteUrl).url).toBe("https://www.meteunal.dev/");
+  });
+});
+
+describe("vercel.json redirects", () => {
+  const redirects = vercel.redirects;
+  const productionHost = new URL(PRODUCTION_URL).host;
+
+  it("permanently redirects every old Vercel address to the same path on the official domain", () => {
+    for (const host of LEGACY_HOSTS) {
+      const rule = redirects.find((r) => r.has?.some((h) => h.type === "host" && h.value === host));
+      expect(rule, host).toBeDefined();
+      expect(rule!.source).toBe("/:path*");
+      expect(rule!.destination).toBe(`${PRODUCTION_URL}/:path*`);
+      expect(rule!.permanent).toBe(true);
+    }
+  });
+
+  it("never redirects the official domain itself (no loops) and only matches specific hosts", () => {
+    for (const r of redirects) {
+      expect(r.has?.length, "every redirect is host-scoped").toBeGreaterThan(0);
+      for (const h of r.has ?? []) expect(h.value).not.toBe(productionHost);
+    }
   });
 });

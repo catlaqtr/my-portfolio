@@ -1,6 +1,6 @@
 # Mete Ünal — Portfolio
 
-My portfolio, live at **https://meteunalportfolio.vercel.app**. It opens on a
+My portfolio, live at **https://www.meteunal.dev**. It opens on a
 title screen with two ways in: **Hearthvale**, an explorable pixel-art village
 built with Phaser 4, and **Recruiter Mode**, a fast classic site with the
 résumé, projects, skills and contact details on plain pages.
@@ -75,11 +75,15 @@ canonical URL, Open Graph/Twitter tags and schema.org Person data, and its
 real content readable without JavaScript. It also writes `robots.txt` and
 `sitemap.xml`. Titles and descriptions live in `src/content/seo.ts`.
 
-Canonical URLs, `og:url`, the sitemap and structured data always point at
-the production address, https://meteunalportfolio.vercel.app (`scripts/site.mjs`);
-set `SITE_URL` to override it (e.g. a future custom domain). Preview
-deployments are additionally marked `noindex` and their `robots.txt`
-disallows crawling, so they never compete with the real site. `vercel.json`
+Canonical URLs, `og:url`, Twitter cards, the sitemap and structured data
+always point at the official address, https://www.meteunal.dev
+(`scripts/site.mjs`; set `SITE_URL` to override). Preview deployments are
+additionally marked `noindex` and their `robots.txt` disallows crawling, so
+they never compete with the real site.
+
+Domains: `meteunal.dev` redirects to `www.meteunal.dev` (Vercel domain
+settings), and the old `meteunalportfolio.vercel.app` address redirects
+permanently to the same path on the new domain (`redirects` in `vercel.json`). `vercel.json`
 serves `/about` → `about.html` and everything else (e.g. `/play`) from the
 app shell.
 

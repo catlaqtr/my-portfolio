@@ -15,7 +15,7 @@ export function personJsonLd(siteUrl: string) {
     "@context": "https://schema.org",
     "@type": "Person",
     name: profile.name,
-    ...(siteUrl && { url: siteUrl }),
+    ...(siteUrl && { url: `${siteUrl}/` }), // same as the home page canonical
     jobTitle: "Java backend developer",
     alumniOf: [
       { "@type": "CollegeOrUniversity", name: "Humber College" },
